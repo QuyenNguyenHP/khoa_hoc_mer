@@ -1,0 +1,205 @@
+{
+  "title": "Kiểm tra kiến thức nền tảng",
+  "questions": [
+    {
+      "question": "Merchandiser là người làm gì?",
+      "options": [
+        "Điều phối đơn hàng",
+        "Lái xe giao hàng",
+        "May mẫu",
+        "Bán lẻ"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "PO là viết tắt của?",
+      "options": [
+        "Purchase Order",
+        "Product Output",
+        "Planning Office",
+        "Price Offer"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "BOM dùng để theo dõi?",
+      "options": [
+        "Nguyên phụ liệu",
+        "Nhân sự",
+        "Lương",
+        "Khách hàng"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Lead time là gì?",
+      "options": [
+        "Thời gian thực hiện",
+        "Số lượng hàng",
+        "Tên khách",
+        "Màu sản phẩm"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Shipment là?",
+      "options": [
+        "Lô hàng giao đi",
+        "Mẫu thử",
+        "Báo giá",
+        "Lỗi may"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Tech Pack thường chứa?",
+      "options": [
+        "Thông số kỹ thuật",
+        "Hợp đồng lao động",
+        "Bảng lương",
+        "Lịch họp"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "FIT sample dùng để?",
+      "options": [
+        "Kiểm tra độ vừa vặn",
+        "Đóng gói",
+        "Giao hàng",
+        "Đặt vải"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "PP sample là mẫu?",
+      "options": [
+        "Trước sản xuất",
+        "Sau giao hàng",
+        "Mẫu bán lẻ",
+        "Mẫu lỗi"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "QA/QC liên quan đến?",
+      "options": [
+        "Chất lượng",
+        "Tài chính",
+        "Marketing",
+        "Tuyển dụng"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "T&A plan dùng để?",
+      "options": [
+        "Theo dõi tiến độ",
+        "Thiết kế logo",
+        "Tính lương",
+        "Lập email"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Trims là?",
+      "options": [
+        "Phụ liệu",
+        "Vải chính",
+        "Máy may",
+        "Kho hàng"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Inline inspection diễn ra khi nào?",
+      "options": [
+        "Trong chuyền may",
+        "Sau khi giao hàng",
+        "Khi chào giá",
+        "Trước đặt PO"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Final inspection là?",
+      "options": [
+        "Kiểm cuối",
+        "Kiểm vải đầu vào",
+        "Kiểm mẫu FIT",
+        "Kiểm email"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Shortage nghĩa là?",
+      "options": [
+        "Thiếu hụt",
+        "Dư thừa",
+        "Duyệt mẫu",
+        "Giao hàng"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Deadline là?",
+      "options": [
+        "Hạn chót",
+        "Mã đơn hàng",
+        "Số lượng",
+        "Màu sắc"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Customer là?",
+      "options": [
+        "Khách hàng",
+        "Nhà cung cấp",
+        "Nhà máy",
+        "Nhân viên QA"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Supplier là?",
+      "options": [
+        "Nhà cung cấp",
+        "Khách hàng",
+        "Người kiểm hàng",
+        "Nhân viên IE"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Approval là?",
+      "options": [
+        "Sự phê duyệt",
+        "Sự chậm trễ",
+        "Thiếu hụt",
+        "Giao nhận"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Một email tốt cần theo nguyên tắc?",
+      "options": [
+        "3C",
+        "5S",
+        "FIFO",
+        "AQL"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Merchandiser cần ưu tiên điều gì?",
+      "options": [
+        "Tiến độ và thông tin chính xác",
+        "Trang trí email",
+        "Họp nhiều",
+        "In tài liệu"
+      ],
+      "answer": 0
+    }
+  ]
+}

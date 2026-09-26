@@ -1,0 +1,10 @@
+{
+  "title": "Quản lý nguyên phụ liệu",
+  "objective": "Theo dõi đặt hàng, giao nhận và xử lý thiếu hụt nguyên phụ liệu.",
+  "topics": [
+    "BOM, booking, inbound/outbound, shortage/excess",
+    "Lập kế hoạch đặt phụ liệu theo lead time"
+  ],
+  "duration": "45 phút",
+  "videoFile": "video.mp4"
+}

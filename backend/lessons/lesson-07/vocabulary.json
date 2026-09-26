@@ -1,0 +1,18 @@
+[
+  {
+    "term": "booking",
+    "meaning": "đặt hàng"
+  },
+  {
+    "term": "inbound",
+    "meaning": "hàng nhập"
+  },
+  {
+    "term": "outbound",
+    "meaning": "hàng xuất"
+  },
+  {
+    "term": "shortage",
+    "meaning": "thiếu hụt"
+  }
+]

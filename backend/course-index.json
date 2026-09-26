@@ -1,0 +1,48 @@
+{
+  "course": {
+    "title": "Khóa học: Merchandising ngành may",
+    "description": "Chương trình giúp bạn nắm quy trình Merchandiser, thực hành theo từng tình huống và xây dựng nền tảng làm việc thực tế."
+  },
+  "lessons": [
+    {
+      "id": 1,
+      "directory": "lesson-01"
+    },
+    {
+      "id": 2,
+      "directory": "lesson-02"
+    },
+    {
+      "id": 3,
+      "directory": "lesson-03"
+    },
+    {
+      "id": 4,
+      "directory": "lesson-04"
+    },
+    {
+      "id": 5,
+      "directory": "lesson-05"
+    },
+    {
+      "id": 6,
+      "directory": "lesson-06"
+    },
+    {
+      "id": 7,
+      "directory": "lesson-07"
+    },
+    {
+      "id": 8,
+      "directory": "lesson-08"
+    },
+    {
+      "id": 9,
+      "directory": "lesson-09"
+    },
+    {
+      "id": 10,
+      "directory": "lesson-10"
+    }
+  ]
+}

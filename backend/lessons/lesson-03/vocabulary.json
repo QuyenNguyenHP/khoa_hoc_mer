@@ -1,0 +1,11 @@
+[
+  { "term": "Tech Pack", "ipa": "/tek pæk/", "meaning": "bản thông số kỹ thuật" },
+  { "term": "Measurement", "ipa": "/ˈmeʒ.ər.mənt/", "meaning": "kích thước" },
+  { "term": "Spec", "ipa": "/spek/", "meaning": "thông số" },
+  { "term": "Construction", "ipa": "/kənˈstrʌk.ʃən/", "meaning": "cấu trúc may" },
+  { "term": "BOM", "ipa": "/ˌbiː.əʊˈem/", "meaning": "Bill of Materials — bảng nguyên phụ liệu" },
+  { "term": "Artwork", "ipa": "/ˈɑːt.wɜːk/", "meaning": "hình in/thêu" },
+  { "term": "Colorway", "ipa": "/ˈkʌl.ə.weɪ/", "meaning": "bảng màu" },
+  { "term": "Size range", "ipa": "/saɪz reɪndʒ/", "meaning": "dải size" },
+  { "term": "Comment", "ipa": "/ˈkɒm.ent/", "meaning": "nhận xét/feedback" }
+]

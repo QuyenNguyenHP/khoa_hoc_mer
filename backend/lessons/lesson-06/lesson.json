@@ -1,0 +1,10 @@
+{
+  "title": "Làm việc với các phòng ban trong nhà máy",
+  "objective": "Phối hợp hiệu quả khi phát sinh lỗi may hoặc thay đổi yêu cầu.",
+  "topics": [
+    "Vai trò TD, QA/QC, Planning, IE và Production",
+    "Luồng trao đổi khi khách thay đổi yêu cầu kỹ thuật"
+  ],
+  "duration": "40 phút",
+  "videoFile": "video.mp4"
+}

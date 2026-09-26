@@ -1,0 +1,10 @@
+{
+  "title": "Quản lý đơn hàng cơ bản",
+  "objective": "Theo dõi tiến độ đơn hàng từ PO đến shipment.",
+  "topics": [
+    "PO, quantity, delivery date, lead time, deadline",
+    "Lập Time & Action plan cho đơn hàng áo sơ mi"
+  ],
+  "duration": "45 phút",
+  "videoFile": "video.mp4"
+}

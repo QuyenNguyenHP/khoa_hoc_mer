@@ -1,0 +1,50 @@
+{
+  "users": [
+    {
+      "id": "admin-1",
+      "name": "Quản trị viên",
+      "email": "admin@khoahoc.local",
+      "passwordHash": "$2a$10$d3JY0QhRDzdiZ5.oydYQTuQDZVruo/X0kIitgqMqtGuYbqQJDORYe",
+      "role": "admin",
+      "completedLessons": []
+    },
+    {
+      "id": "student-1",
+      "name": "Nguyễn Minh Anh",
+      "email": "anh@example.com",
+      "passwordHash": "$2a$10$FAQR6nciA/lJqgIRlRxLlOgHsthiaXeZdUBCyWmfJXzmTsC5qX1Wa",
+      "role": "student",
+      "completedLessons": [
+        1,
+        2
+      ],
+      "notes": {
+        "1": "",
+        "2": "",
+        "3": "qédasdasd\nádasda\nádad\nádadas\nádad\n"
+      }
+    },
+    {
+      "id": "student-1790436379867",
+      "name": "Duy Quyen",
+      "email": "duyquyenbk97@gmail.com",
+      "passwordHash": "$2a$10$.NahYpLZcRncPkczLFQq3.BauUt0yC7rYODCuJp9usFDOlo1IP4KC",
+      "role": "student",
+      "completedLessons": [
+        1
+      ],
+      "notes": {
+        "1": "",
+        "2": ""
+      },
+      "questions": [
+        {
+          "id": "question-1790436526779",
+          "lessonId": 1,
+          "text": "KHó quá!",
+          "createdAt": "2026-09-26T15:28:46.779Z"
+        }
+      ]
+    }
+  ]
+}

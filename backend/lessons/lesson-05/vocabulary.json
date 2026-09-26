@@ -1,0 +1,10 @@
+[
+  { "term": "PO", "ipa": "/ˌpiːˈəʊ/", "meaning": "Purchase Order — đơn đặt hàng" },
+  { "term": "Quantity", "ipa": "/ˈkwɒn.tə.ti/", "meaning": "số lượng" },
+  { "term": "Delivery date", "ipa": "/dɪˈlɪv.ər.i deɪt/", "meaning": "ngày giao hàng" },
+  { "term": "Lead time", "ipa": "/ˈliːd ˌtaɪm/", "meaning": "thời gian sản xuất" },
+  { "term": "T&A", "ipa": "/ˌtiː ən ˈeɪ/", "meaning": "Time & Action plan — kế hoạch thời gian – hành động" },
+  { "term": "Deadline", "ipa": "/ˈded.laɪn/", "meaning": "hạn chót" },
+  { "term": "Delay", "ipa": "/dɪˈleɪ/", "meaning": "trễ" },
+  { "term": "Schedule", "ipa": "/ˈʃed.juːl/", "meaning": "lịch trình" }
+]

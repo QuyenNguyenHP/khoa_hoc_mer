@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* Shared visual finish: the course uses one neutral reading font and softer surfaces. */
+body, button, input, textarea, select { font-family: 'Roboto', Arial, sans-serif !important; }
+h1, h2, h3 { font-family: 'Roboto', Arial, sans-serif !important; }
+
+.login-form { border-radius: 22px; }
+.login-form input, .login-form button { border-radius: 12px; }
+.login-mark span { border-radius: 12px; }
+.hero { border-radius: 18px; }
+.hero button, .outline, .complete { border-radius: 12px; }
+.lesson { border-radius: 12px; margin: 5px 0; padding-left: 12px; padding-right: 12px; }
+.profile { border-radius: 14px; }
+.player { border-radius: 20px; overflow: hidden; }
+.video-player { border-radius: 12px; }
+.player-note { border-radius: 0 12px 12px 0; }
+.calendar { border-radius: 12px; }
+.admin-header { border-radius: 0 0 18px 18px; }
+.student-table, .admin-detail, .add-student { border-radius: 18px; }
+.student-row { border-radius: 12px; margin: 4px 8px; width: calc(100% - 16px); }
+.edit-form input, .add-student input, .edit-form button, .add-student button, .danger { border-radius: 10px; }
+.icon-action { width: 36px; height: 36px; border-radius: 12px; background: #102641; }
+.progress-check { border-radius: 9px; padding-left: 8px; padding-right: 8px; }
+.modal-backdrop { backdrop-filter: blur(6px); }
+@media (max-width: 800px) { .hero, .player, .login-form, .student-table, .admin-detail, .add-student { border-radius: 16px; } }

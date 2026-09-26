@@ -1,0 +1,10 @@
+{
+  "title": "Kiểm soát chất lượng",
+  "objective": "Hiểu kiểm hàng trong chuyền, kiểm cuối và cách truyền đạt lỗi chất lượng.",
+  "topics": [
+    "Inline inspection, final inspection, minor/major defect",
+    "Nhận diện lỗi và viết báo cáo ngắn cho khách hàng"
+  ],
+  "duration": "40 phút",
+  "videoFile": "video.mp4"
+}
