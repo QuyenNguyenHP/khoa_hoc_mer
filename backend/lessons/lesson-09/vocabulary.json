@@ -1,18 +1,10 @@
 [
-  {
-    "term": "attachment",
-    "meaning": "tệp đính kèm"
-  },
-  {
-    "term": "please confirm",
-    "meaning": "vui lòng xác nhận"
-  },
-  {
-    "term": "delay in shipment",
-    "meaning": "chậm giao hàng"
-  },
-  {
-    "term": "awaiting approval",
-    "meaning": "đang chờ phê duyệt"
-  }
+  { "term": "Subject", "meaning": "tiêu đề" },
+  { "term": "Attachment", "meaning": "tập tin đính kèm" },
+  { "term": "As per your request", "meaning": "theo yêu cầu của bạn" },
+  { "term": "Please confirm", "meaning": "vui lòng xác nhận" },
+  { "term": "Delay in shipment", "meaning": "giao hàng bị trễ" },
+  { "term": "Awaiting your approval", "meaning": "đang chờ bạn duyệt" },
+  { "term": "Kindly find attached", "meaning": "xin vui lòng xem file đính kèm" },
+  { "term": "We regret to inform", "meaning": "rất tiếc phải thông báo" }
 ]

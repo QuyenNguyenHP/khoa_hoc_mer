@@ -1,18 +1,10 @@
 [
-  {
-    "term": "coordination",
-    "meaning": "sự phối hợp"
-  },
-  {
-    "term": "issue",
-    "meaning": "vấn đề"
-  },
-  {
-    "term": "production line",
-    "meaning": "chuyền sản xuất"
-  },
-  {
-    "term": "planning",
-    "meaning": "lập kế hoạch"
-  }
+  { "term": "TD", "ipa": "/ˌtiːˈdiː/", "meaning": "Technical Department — phòng kỹ thuật" },
+  { "term": "QA", "ipa": "/ˌkjuːˈeɪ/", "meaning": "Quality Assurance — đảm bảo chất lượng" },
+  { "term": "QC", "ipa": "/ˌkjuːˈsiː/", "meaning": "Quality Control — kiểm soát chất lượng" },
+  { "term": "Planning team", "ipa": "/ˈplæn.ɪŋ tiːm/", "meaning": "phòng kế hoạch" },
+  { "term": "IE", "ipa": "/ˌaɪˈiː/", "meaning": "Industrial Engineering — kỹ thuật công nghiệp" },
+  { "term": "Production line", "ipa": "/prəˈdʌk.ʃən laɪn/", "meaning": "chuyền sản xuất" },
+  { "term": "Issue", "ipa": "/ˈɪʃ.uː/", "meaning": "vấn đề" },
+  { "term": "Coordination", "ipa": "/kəʊˌɔː.dɪˈneɪ.ʃən/", "meaning": "phối hợp" }
 ]

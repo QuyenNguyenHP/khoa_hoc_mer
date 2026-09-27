@@ -120,7 +120,10 @@ app.post('/api/lessons/:id/complete', auth, (req, res) => {
   if (!found.completedLessons.includes(id)) found.completedLessons.push(id); writeData(data); res.json(studentCourse(found));
 });
 
-app.get('/api/admin/students', auth, admin, (_req, res) => res.json({ lessons, students: readData().users.filter(item => item.role === 'student').map(studentSummary) }));
+app.get('/api/admin/students', auth, admin, (_req, res) => {
+  const accounts = readData().users.map(studentSummary);
+  res.json({ lessons, students: accounts.filter(item => item.role === 'student'), accounts });
+});
 app.post('/api/admin/students', auth, admin, (req, res) => {
   const { name, email, password, role = 'student' } = req.body; if (!name || !email || !password) return res.status(400).json({ message: 'Cần tên, email và mật khẩu.' });
   if (!['student', 'admin'].includes(role)) return res.status(400).json({ message: 'Vai trò không hợp lệ.' });
@@ -130,6 +133,13 @@ app.post('/api/admin/students', auth, admin, (req, res) => {
 app.put('/api/admin/students/:id', auth, admin, (req, res) => {
   const data = readData(); const found = data.users.find(item => item.id === req.params.id && item.role === 'student'); if (!found) return res.status(404).json({ message: 'Không tìm thấy học viên.' });
   const { name, email, password } = req.body; if (name) found.name = name; if (email) found.email = email; if (password) found.passwordHash = bcrypt.hashSync(password, 10); writeData(data); res.json(studentSummary(found));
+});
+app.put('/api/admin/accounts/:id/role', auth, admin, (req, res) => {
+  const { role } = req.body; const data = readData(); const found = data.users.find(item => item.id === req.params.id);
+  if (!found) return res.status(404).json({ message: 'Không tìm thấy tài khoản.' });
+  if (!['student', 'admin'].includes(role)) return res.status(400).json({ message: 'Vai trò không hợp lệ.' });
+  if (found.role === 'admin' && role === 'student' && data.users.filter(item => item.role === 'admin').length <= 1) return res.status(400).json({ message: 'Không thể hạ quyền quản trị viên cuối cùng.' });
+  found.role = role; writeData(data); res.json(studentSummary(found));
 });
 app.put('/api/admin/students/:id/progress', auth, admin, (req, res) => {
   const data = readData(); const found = data.users.find(item => item.id === req.params.id && item.role === 'student'); const completedLessons = req.body.completedLessons;

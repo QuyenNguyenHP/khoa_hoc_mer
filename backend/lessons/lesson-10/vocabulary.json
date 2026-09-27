@@ -1,18 +1,9 @@
 [
-  {
-    "term": "order management",
-    "meaning": "quản lý đơn hàng"
-  },
-  {
-    "term": "production capacity",
-    "meaning": "năng lực sản xuất"
-  },
-  {
-    "term": "follow-up",
-    "meaning": "theo dõi, đôn đốc"
-  },
-  {
-    "term": "resolve",
-    "meaning": "giải quyết"
-  }
+  { "term": "Order management", "ipa": "/ˈɔː.dər ˈmæn.ɪdʒ.mənt/", "meaning": "quản lý đơn hàng" },
+  { "term": "Production capacity", "ipa": "/prəˈdʌk.ʃən kəˈpæs.ə.ti/", "meaning": "năng lực sản xuất" },
+  { "term": "Shipment schedule", "ipa": "/ˈʃɪp.mənt ˈʃed.juːl/", "meaning": "lịch giao hàng" },
+  { "term": "Follow-up", "ipa": "/ˈfɒl.əʊ ʌp/", "meaning": "theo dõi" },
+  { "term": "Update", "ipa": "/ʌpˈdeɪt/", "meaning": "cập nhật" },
+  { "term": "Pending", "ipa": "/ˈpen.dɪŋ/", "meaning": "đang chờ xử lý" },
+  { "term": "Resolve", "ipa": "/rɪˈzɒlv/", "meaning": "giải quyết" }
 ]

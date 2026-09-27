@@ -1,18 +1,12 @@
 [
-  {
-    "term": "defect",
-    "meaning": "lỗi"
-  },
-  {
-    "term": "minor defect",
-    "meaning": "lỗi nhẹ"
-  },
-  {
-    "term": "major defect",
-    "meaning": "lỗi nặng"
-  },
-  {
-    "term": "puckering",
-    "meaning": "nhăn dúm đường may"
-  }
+  { "term": "Inline inspection", "ipa": "/ˈɪn.laɪn ɪnˈspek.ʃən/", "meaning": "kiểm trong chuyền" },
+  { "term": "Final inspection", "ipa": "/ˈfaɪ.nəl ɪnˈspek.ʃən/", "meaning": "kiểm cuối cùng" },
+  { "term": "Defect", "ipa": "/ˈdiː.fekt/", "meaning": "lỗi" },
+  { "term": "Minor defect", "ipa": "/ˈmaɪ.nər ˈdiː.fekt/", "meaning": "lỗi nhẹ" },
+  { "term": "Major defect", "ipa": "/ˈmeɪ.dʒər ˈdiː.fekt/", "meaning": "lỗi nặng" },
+  { "term": "Sewing", "ipa": "/ˈsəʊ.ɪŋ/", "meaning": "may" },
+  { "term": "Puckering", "ipa": "/ˈpʌk.ər.ɪŋ/", "meaning": "nhăn đường may" },
+  { "term": "Stain", "ipa": "/steɪn/", "meaning": "vết bẩn" },
+  { "term": "Reject", "ipa": "/rɪˈdʒekt/", "meaning": "hàng lỗi" },
+  { "term": "Pass", "ipa": "/pɑːs/", "meaning": "hàng đạt" }
 ]

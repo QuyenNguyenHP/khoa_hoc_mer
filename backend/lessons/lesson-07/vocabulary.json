@@ -1,18 +1,10 @@
 [
-  {
-    "term": "booking",
-    "meaning": "đặt hàng"
-  },
-  {
-    "term": "inbound",
-    "meaning": "hàng nhập"
-  },
-  {
-    "term": "outbound",
-    "meaning": "hàng xuất"
-  },
-  {
-    "term": "shortage",
-    "meaning": "thiếu hụt"
-  }
+  { "term": "BOM", "ipa": "/ˌbiː.əʊˈem/", "meaning": "Bill of Materials — bảng nguyên phụ liệu" },
+  { "term": "Material", "ipa": "/məˈtɪə.ri.əl/", "meaning": "nguyên liệu" },
+  { "term": "Accessory", "ipa": "/əkˈses.ər.i/", "meaning": "phụ liệu" },
+  { "term": "Booking", "ipa": "/ˈbʊk.ɪŋ/", "meaning": "đặt hàng" },
+  { "term": "Inbound", "ipa": "/ˈɪn.baʊnd/", "meaning": "hàng nhập vào" },
+  { "term": "Outbound", "ipa": "/ˈaʊt.baʊnd/", "meaning": "hàng xuất ra" },
+  { "term": "Shortage", "ipa": "/ˈʃɔː.tɪdʒ/", "meaning": "thiếu hàng" },
+  { "term": "Excess", "ipa": "/ɪkˈses/", "meaning": "dư hàng" }
 ]
