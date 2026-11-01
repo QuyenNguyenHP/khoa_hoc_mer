@@ -1,0 +1,15 @@
+{
+  "price": 1990000,
+  "bank": {
+    "bankId": "",
+    "bankName": "",
+    "accountNo": "",
+    "accountName": ""
+  },
+  "zaloPhone": "",
+  "instructor": {
+    "name": "Cô Mer",
+    "role": "Giảng viên nghiệp vụ Merchandiser",
+    "bio": "Giảng viên nghiệp vụ Merchandiser với kinh nghiệm thực chiến tại công ty may mặc xuất khẩu. (Cập nhật phần giới thiệu này trong backend/site-config.json.)"
+  }
+}

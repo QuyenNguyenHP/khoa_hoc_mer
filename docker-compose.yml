@@ -7,6 +7,9 @@ services:
     volumes:
       - ./backend/data.json:/app/backend/data.json
       - ./backend/lessons:/app/backend/lessons
+      - ./backend/blog.json:/app/backend/blog.json
+      - ./backend/site-config.json:/app/backend/site-config.json
+      - ./backend/private:/app/backend/private
     expose:
       - "3002"
 

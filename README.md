@@ -9,12 +9,25 @@ npm run dev
 
 Mở `http://localhost:5173`.
 
+## Trang giới thiệu, đăng ký và blog
+
+- `#` hoặc `#gioi-thieu`: trang giới thiệu bán khóa học (học phí, nội dung 10 buổi lấy từ `backend/lessons/`, giảng viên, hỏi đáp).
+- `#blog`, `#blog/<slug>`: blog công khai. `#dang-nhap`: đăng nhập học viên.
+- Cấu hình trong `backend/site-config.json` (hoặc biến môi trường `COURSE_PRICE`, `BANK_ID`, `BANK_NAME`, `BANK_ACCOUNT_NO`, `BANK_ACCOUNT_NAME`, `ZALO_PHONE`):
+  - `bank.bankId`: mã ngân hàng theo VietQR (ví dụ `VCB`, `MB`, `TCB`, `ACB`), `bank.accountNo`, `bank.accountName` (viết hoa, không dấu). Khi chưa điền, form đăng ký chỉ hiện mã đăng ký và nhờ khách nhắn Zalo.
+  - `zaloPhone`: số Zalo, hiện nút chat Zalo nổi ở góc màn hình.
+  - `instructor`: tên, chức danh, giới thiệu giảng viên.
+- Quy trình mua: khách bấm **Đăng ký học** → điền họ tên, email, SĐT → nhận mã QR (ảnh tạo bởi img.vietqr.io) với nội dung chuyển khoản riêng dạng `MERxxxxxx`.
+- Quản trị → tab **Đơn đăng ký**: đối chiếu sao kê theo mã, bấm **Đã nhận tiền** để tạo tài khoản học viên. Mật khẩu ngẫu nhiên chỉ hiện một lần kèm nội dung soạn sẵn để gửi qua email/Zalo.
+- Đơn đăng ký lưu ở `backend/private/orders.json` (có thông tin cá nhân, đã đưa vào `.gitignore`).
+- Quản trị → tab **Blog**: viết, sửa, đăng/ẩn bài. Bài lưu ở `backend/blog.json`. Cách viết: dòng trống giữa các đoạn, `## ` tiêu đề mục, `### ` tiêu đề nhỏ, `- ` gạch đầu dòng.
+
 ## Video, học viên và mở khóa bài
 
 - Chép video MP4 vào `backend/videos/` và đặt đúng tên: `buoi-01.mp4` đến `buoi-10.mp4`. Thư mục này không được public qua web.
 - Mỗi lần bấm phát, backend kiểm tra đăng nhập và quyền mở bài, rồi tạo URL stream riêng có hiệu lực 20 phút. Video phát theo byte-range để trình duyệt có thể tua; URL trực tiếp không tồn tại lâu dài.
 - Học viên bấm `Đánh dấu đã hoàn thành` sau khi xem. Backend lưu tiến độ trong `backend/data.json` và tự mở bài chưa hoàn thành kế tiếp.
-- Đăng nhập mẫu học viên: `anh@example.com` / `hocvien123`. Quản trị: `admin@khoahoc.local` / `admin123`.
+- Khi chưa có `backend/data.json`, backend tự tạo tài khoản mẫu (xem `readData()` trong `backend/index.js`). Đổi ngay mật khẩu các tài khoản này trước khi đưa lên mạng.
 - Quản lý học viên hiện có API dành cho quản trị: `GET /api/admin/students`, `POST /api/admin/students`, và `POST /api/admin/students/:id/unlock/:lessonId`. Ba API này yêu cầu token của tài khoản quản trị.
 
 Đây là lưu trữ JSON phù hợp để chạy thử hoặc lớp nhỏ. Khi đưa lên production, chuyển `backend/data.json` sang PostgreSQL/MySQL, đặt `JWT_SECRET` thành giá trị bí mật và dùng HTTPS. Không lưu video trong thư mục `public`.

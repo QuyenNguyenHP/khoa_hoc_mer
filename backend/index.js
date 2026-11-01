@@ -22,6 +22,9 @@ const upload = multer({
   limits: { fileSize: 2 * 1024 * 1024 * 1024 },
   fileFilter: (_req, file, callback) => callback(null, file.mimetype === 'video/mp4' || path.extname(file.originalname).toLowerCase() === '.mp4')
 });
+// Behind Apache -> Nginx -> API: trust proxies on private networks so req.ip is the real
+// visitor (used by the order-form rate limit).
+app.set('trust proxy', 'loopback, linklocal, uniquelocal');
 app.use(cors());
 app.use(express.json());
 
@@ -168,6 +171,8 @@ app.delete('/api/admin/videos/:id', auth, admin, (req, res) => {
   const lesson = lessons.find(item => item.id === Number(req.params.id)); if (!lesson) return res.status(404).json({ message: 'Không tìm thấy buổi học.' });
   const file = path.join(lessonDirectory(lesson), lesson.videoFile); if (fs.existsSync(file)) fs.unlinkSync(file); res.status(204).end();
 });
+require('./site')(app, { auth, admin, readData, writeData, getLessons: () => lessons, courseIndex });
+
 app.use((error, _req, res, _next) => {
   if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') return res.status(413).json({ message: 'Video vượt giới hạn 2 GB.' });
   if (error) return res.status(400).json({ message: 'Chỉ nhận file video MP4.' });

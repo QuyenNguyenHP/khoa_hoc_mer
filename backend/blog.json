@@ -1,0 +1,37 @@
+{
+  "posts": [
+    {
+      "id": "post-seed-1",
+      "slug": "merchandiser-nganh-may-la-gi",
+      "title": "Merchandiser ngành may là gì? Một ngày làm việc trông như thế nào",
+      "category": "Kiến thức nghề",
+      "excerpt": "Merchandiser là người giữ cho một đơn hàng may mặc đi đúng hướng: đúng mẫu, đúng chất lượng, đúng ngày giao. Bài viết giải thích vai trò, các loại merchandiser và công việc hằng ngày.",
+      "content": "Trong một công ty may mặc xuất khẩu, merchandiser là đầu mối giữa khách hàng (brand, buyer) và nhà máy. Họ không trực tiếp cắt may, nhưng chịu trách nhiệm để đơn hàng đi đúng mẫu, đúng chất lượng và đúng ngày giao.\n\n## Các loại merchandiser thường gặp\n\n- Marketing / Sales merchandiser: làm việc với khách hàng, nhận yêu cầu, báo giá, chốt đơn.\n- Product development merchandiser: theo dõi phát triển mẫu, làm việc với Tech Pack và phòng kỹ thuật.\n- Production merchandiser: theo dõi đơn từ khi có PO đến khi giao hàng, phối hợp với nhà máy.\n- Sourcing merchandiser: tìm và làm việc với nhà cung cấp vải, phụ liệu.\n\n## Một ngày của merchandiser mới\n\n- Đọc và trả lời email khách hàng (thường bằng tiếng Anh).\n- Cập nhật bảng theo dõi tiến độ (T&A) và tình trạng nguyên phụ liệu.\n- Gửi mẫu, nhận comment duyệt mẫu và chuyển cho phòng kỹ thuật.\n- Họp nhanh với kế hoạch, sản xuất, QA/QC khi có vấn đề phát sinh.\n\n## Merchandiser cần những kỹ năng gì?\n\nKiến thức về vải, phụ liệu và sản phẩm; đọc được Tech Pack; quản lý thời gian và tiến độ; giao tiếp, viết email tiếng Anh rõ ràng; và quan trọng nhất là khả năng phát hiện sớm rủi ro để xử lý trước khi nó làm trễ đơn hàng.\n\nKhóa học Merchandising ngành may đi qua lần lượt từng phần này trong 10 buổi, với bài thực hành xuyên suốt là quản lý một đơn hàng áo sơ mi từ A đến Z.",
+      "published": true,
+      "createdAt": "2026-11-01T08:00:00.000Z",
+      "updatedAt": "2026-11-01T08:00:00.000Z"
+    },
+    {
+      "id": "post-seed-2",
+      "slug": "hanh-trinh-mot-don-hang-may-mac",
+      "title": "Hành trình một đơn hàng may mặc: từ nhận đơn đến giao hàng",
+      "category": "Kiến thức nghề",
+      "excerpt": "Một đơn hàng may mặc xuất khẩu đi qua nhiều chặng: nhận yêu cầu, phát triển mẫu, duyệt mẫu, đặt nguyên phụ liệu, sản xuất, kiểm hàng và giao hàng. Hiểu bức tranh tổng thể giúp bạn biết mình cần theo dõi điều gì.",
+      "content": "Người mới vào nghề thường bị ngợp vì có quá nhiều việc cùng lúc. Cách tốt nhất để bắt đầu là nhìn được toàn bộ hành trình của một đơn hàng, rồi mới đi vào chi tiết từng chặng.\n\n## 1. Nhận yêu cầu và Tech Pack\n\nKhách hàng gửi Tech Pack: thông số (measurement), cách may (construction), bảng nguyên phụ liệu (BOM) và hình in, thêu (artwork). Merchandiser đọc kỹ, ghi lại những điểm chưa rõ và hỏi lại khách trước khi làm mẫu.\n\n## 2. Phát triển và duyệt mẫu\n\nMẫu đi qua nhiều vòng: development sample, fit sample, size set, PP sample (pre-production). Mỗi vòng khách hàng có thể duyệt hoặc gửi comment yêu cầu sửa.\n\n## 3. Đặt hàng và nguyên phụ liệu\n\nKhi có PO, merchandiser lập kế hoạch T&A (Time & Action), đặt vải và phụ liệu theo lead time của từng nhà cung cấp. Đây là chặng hay gây trễ nhất nếu không theo dõi sát.\n\n## 4. Sản xuất và kiểm soát chất lượng\n\nNhà máy sản xuất theo mẫu PP đã duyệt. QA/QC kiểm tra inline trong quá trình may và final inspection trước khi đóng thùng.\n\n## 5. Giao hàng\n\nHàng được đóng gói, làm chứng từ và xuất đi (shipment). Merchandiser xác nhận ngày giao với khách và cập nhật trạng thái đơn.\n\nBuổi 1 của khóa học có bài thực hành kéo thả để sắp xếp các chặng này, giúp bạn ghi nhớ trình tự trước khi đi sâu vào từng phần.",
+      "published": true,
+      "createdAt": "2026-11-01T08:10:00.000Z",
+      "updatedAt": "2026-11-01T08:10:00.000Z"
+    },
+    {
+      "id": "post-seed-3",
+      "slug": "thuat-ngu-tieng-anh-merchandiser-can-biet",
+      "title": "15 thuật ngữ tiếng Anh merchandiser dùng hằng ngày",
+      "category": "Kiến thức nghề",
+      "excerpt": "PO, T&A, BOM, lead time, PP sample... Đây là những từ bạn sẽ gặp trong email và cuộc họp ngay từ tuần đầu đi làm.",
+      "content": "Phần lớn tài liệu và email trong ngành may xuất khẩu dùng tiếng Anh. Nắm chắc nhóm từ dưới đây giúp bạn đọc hiểu email khách hàng nhanh hơn rất nhiều.\n\n## Đơn hàng và tiến độ\n\n- PO (Purchase Order): đơn đặt hàng chính thức của khách.\n- T&A (Time & Action plan): kế hoạch mốc thời gian cho từng việc của đơn hàng.\n- Lead time: thời gian cần để hoàn thành một việc, ví dụ thời gian dệt và giao vải.\n- Delivery date / Ex-factory date: ngày giao hàng, ngày hàng rời nhà máy.\n- Shipment: lô hàng giao đi.\n\n## Tài liệu kỹ thuật\n\n- Tech Pack: bộ tài liệu kỹ thuật của sản phẩm.\n- Measurement / Spec: bảng thông số kích thước.\n- BOM (Bill of Materials): bảng nguyên phụ liệu.\n- Colorway: phối màu của sản phẩm.\n- Artwork: hình in, thêu, nhãn.\n\n## Mẫu và chất lượng\n\n- Fit sample: mẫu để kiểm tra độ vừa vặn trên người mẫu hoặc ma-nơ-canh.\n- PP sample (Pre-production sample): mẫu duyệt trước khi sản xuất hàng loạt.\n- Approval / Rejection: khách duyệt / không duyệt.\n- Inline inspection: kiểm hàng trong quá trình sản xuất.\n- Final inspection: kiểm hàng lần cuối trước khi giao.\n\nMỗi buổi trong khóa học đều có phần từ vựng trọng tâm và bài nối thuật ngữ Anh–Việt để bạn luyện tập.",
+      "published": true,
+      "createdAt": "2026-11-01T08:20:00.000Z",
+      "updatedAt": "2026-11-01T08:20:00.000Z"
+    }
+  ]
+}
