@@ -7,8 +7,9 @@ import themeStyles from '../theme.css?raw';
 import lessonStyles from '../lesson.css?raw';
 import lessonLayoutStyles from '../lesson-layout.css?raw';
 import siteStyles from '../site.css?raw';
+import learnStyles from '../learn.css?raw';
 
 // CSS is injected by React so all application styling has one JSX entry point.
 export function AppStyles() {
-  return <style>{`${baseStyles}\n${learningStyles}\n${videoStyles}\n${adminStyles}\n${themeStyles}\n${lessonStyles}\n${lessonLayoutStyles}\n${siteStyles}`}</style>;
+  return <style>{`${baseStyles}\n${learningStyles}\n${videoStyles}\n${adminStyles}\n${themeStyles}\n${lessonStyles}\n${lessonLayoutStyles}\n${siteStyles}\n${learnStyles}`}</style>;
 }

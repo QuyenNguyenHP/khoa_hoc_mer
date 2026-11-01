@@ -3,54 +3,93 @@ import { api } from '../api';
 import { AdminOrders } from './admin/AdminOrders';
 import { AdminBlog } from './admin/AdminBlog';
 
+// Admin in the shared paper/navy theme (colours from :root in site.css). Prefixed with
+// .admin-page so it beats the older dark rules in admin.css and theme.css.
 const ADMIN_PAGE_STYLES = `
-  .admin-page .admin-header { margin: 0; }
-  .admin-page .admin-detail {
-    position: static;
-    top: auto;
-    bottom: auto;
-    width: auto;
-    display: block;
+  .admin-page { background: var(--paper); color: var(--ink); }
+  .admin-page .admin-header { margin: 0; background: var(--paper); border-bottom: 1px solid var(--rule); border-radius: 0; }
+  .admin-page .admin-header > div:last-child { color: var(--muted); font-size: 15px; }
+  .admin-page .admin-header .login-mark span { border: 1px solid var(--rule); background-color: var(--card); }
+  .admin-page .admin-header .login-mark strong::after { color: var(--ink); font-size: 13px; }
+  .admin-page .text-button { color: var(--accent-ink); font-size: 15px; font-weight: 600; }
+  .admin-page .notice { color: var(--bad); background: #fbe4dc; border-radius: 10px; padding: 10px 14px; }
+  .admin-page .eyebrow { color: var(--accent-ink); font-size: 13px; font-weight: 500; letter-spacing: .08em; margin: 0 0 8px; }
+  .admin-page .editor-note { color: var(--muted); font-size: 14px; }
+
+  .admin-page .adm-tabs { display: flex; gap: 6px; margin: 0 0 24px; border-bottom: 1px solid var(--rule); }
+  .admin-page .adm-tabs button { border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px; background: none; color: var(--muted); padding: 12px 16px; font-size: 16px; font-weight: 600; cursor: pointer; }
+  .admin-page .adm-tabs button:hover { color: var(--ink); }
+  .admin-page .adm-tabs button.on { color: var(--ink); border-bottom-color: var(--brass); }
+  .admin-page .adm-tabs a { margin-left: auto; align-self: center; color: var(--accent-ink); font-size: 15px; font-weight: 600; }
+
+  .admin-page .admin-detail { position: static; top: auto; bottom: auto; width: auto; display: block; }
+  .admin-page :is(.student-table, .admin-detail, .add-student) { background: var(--card); border: 1px solid var(--rule); border-radius: 16px; }
+  .admin-page :is(.table-head, .detail-heading) { border-bottom: 1px solid var(--rule); }
+  .admin-page :is(.table-head strong, .detail-heading h2, .add-student h2) { color: var(--ink); }
+  .admin-page .table-head strong { font-size: 17px; }
+  .admin-page .detail-heading h2 { font-size: 24px; }
+  .admin-page .add-student h2 { font-size: 22px; }
+  .admin-page .table-head small { color: var(--muted); font-size: 14px; }
+  .admin-page .student-row { color: var(--ink); border-bottom: 1px solid var(--rule); }
+  .admin-page .student-row:hover, .admin-page .selected-row { background: var(--paper-2); }
+  .admin-page .student-row strong { font-size: 15px; }
+  .admin-page .student-row small { color: var(--muted); font-size: 13px; }
+  .admin-page .avatar { background: var(--night); color: var(--night-ink); font-size: 12px; }
+  .admin-page .admin-progress { background: var(--paper-2); }
+  .admin-page .admin-progress i { background: var(--brass); }
+  .admin-page .admin-question { margin: 12px 0; padding: 14px; border-radius: 10px; background: var(--paper); border: 1px solid var(--rule); }
+  .admin-page .admin-question strong { color: var(--accent-ink); font-size: 13px; }
+  .admin-page .admin-question p { margin: 7px 0; line-height: 1.55; color: var(--ink); }
+  .admin-page .admin-question small { color: var(--muted); font-size: 13px; }
+
+  .admin-page :is(.add-student input, .add-student select, .lesson-editor select, .adm-fields input, .adm-fields textarea) { background: #fffdf8; border: 1px solid var(--control); border-radius: 10px; padding: 10px 12px; color: var(--ink); font-size: 15px; line-height: 1.55; }
+  .admin-page .lesson-editor select { width: 100%; margin: 8px 0 20px; }
+  .admin-page .add-student form { grid-template-columns: repeat(3, minmax(0, 1fr)) auto auto; }
+  @media (max-width: 850px) { .admin-page .add-student form { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) {
+    .admin-page .admin-header { padding: 0 16px; gap: 12px; }
+    .admin-page .admin-header .login-mark strong::after { font-size: 12px; white-space: nowrap; }
+    .admin-page .admin-header .text-button { white-space: nowrap; }
+    .admin-page .admin-header > div:last-child > span, .admin-page .adm-tabs a { display: none; }
+    .admin-page .adm-tabs button { padding: 12px 10px; white-space: nowrap; }
+    .admin-page .table-head { flex-wrap: wrap; gap: 4px; }
   }
-  .admin-page .admin-question { margin: 12px 0; padding: 12px; border-radius: 8px; background: #102641; }
-  .admin-page .admin-question strong { color: #69c9ff; font-size: 12px; }
-  .admin-page .admin-question p { margin: 7px 0; line-height: 1.5; }
-  .admin-page .admin-question small { color: #8ca1b7; font-size: 10px; }
-  .admin-page .add-student select { background: #071426; border: 1px solid rgba(255,255,255,.16); border-radius: 5px; padding: 10px; color: #fff; }
-  .admin-page .adm-tabs { display: flex; gap: 6px; margin: 0 0 24px; border-bottom: 1px solid rgba(255,255,255,.12); }
-  .admin-page .adm-tabs button { border-top: 0; border-left: 0; border-right: 0; background: none; color: #b9c9da; padding: 12px 16px; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -1px; }
-  .admin-page .adm-tabs button.on { color: #fff; border-bottom-color: #f44911; }
-  .admin-page .adm-tabs a { margin-left: auto; align-self: center; color: #69c9ff; font-size: 14px; }
+  .admin-page :is(.add-student button, .adm-actions button, .adm-actions a, .adm-small) { border: 0; border-radius: 10px; background: var(--accent); color: var(--on-accent); padding: 10px 16px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; white-space: nowrap; }
+  .admin-page :is(.add-student button, .adm-actions button, .adm-actions a, .adm-small):hover { background: var(--accent-hover); }
+  .admin-page .adm-actions .adm-muted { background: var(--paper-2); color: var(--ink); }
+  .admin-page .adm-actions .adm-muted:hover { background: var(--rule); }
+  .admin-page .adm-actions .danger, .admin-page .danger { margin: 0; border: 1px solid #c0705a; background: transparent; color: var(--bad); border-radius: 10px; padding: 9px 14px; font-size: 15px; font-weight: 600; }
+  .admin-page .adm-actions .danger:hover { background: #fbe4dc; }
+
   .admin-page .adm-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-  .admin-page .adm-filters button { border: 1px solid rgba(255,255,255,.16); background: #0b1930; color: #d4e0ed; border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
-  .admin-page .adm-filters button.on { background: #f44911; border-color: #f44911; color: #fff; }
-  .admin-page .adm-table-wrap { overflow-x: auto; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; background: #0b1930; }
-  .admin-page .adm-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  .admin-page .adm-table th { text-align: left; color: #8ca1b7; font-weight: 600; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.12); white-space: nowrap; }
-  .admin-page .adm-table td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.06); vertical-align: top; }
-  .admin-page .adm-table small { color: #8ca1b7; }
-  .admin-page .adm-table code { color: #69c9ff; font-size: 14px; }
-  .admin-page .adm-status { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 13px; white-space: nowrap; }
-  .admin-page .adm-status.pending { background: rgba(244,73,17,.16); color: #ffb08f; }
-  .admin-page .adm-status.paid { background: rgba(80,200,120,.16); color: #8fe0a8; }
-  .admin-page .adm-status.cancelled { background: rgba(255,255,255,.08); color: #8ca1b7; }
-  .admin-page .adm-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .admin-page .adm-actions button, .admin-page .adm-actions a, .admin-page .adm-small { border: 0; border-radius: 8px; background: #f44911; color: #fff; padding: 8px 14px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; white-space: nowrap; }
-  .admin-page .adm-actions .adm-muted { background: rgba(255,255,255,.1); color: #d4e0ed; }
-  .admin-page .adm-box { border-radius: 12px; padding: 18px 20px; margin-bottom: 20px; }
-  .admin-page .adm-success { background: #0f2d22; border: 1px solid #2f7a52; }
-  .admin-page .adm-success p { color: #c9e6d5; margin: 6px 0 10px; font-size: 14px; }
-  .admin-page .adm-success pre { white-space: pre-wrap; background: #071426; padding: 12px; border-radius: 8px; font-size: 14px; color: #fff; margin: 0 0 12px; }
-  .admin-page .adm-post-row { grid-template-columns: minmax(0,1fr) auto; }
-  .admin-page .adm-editor .detail-heading a { color: #69c9ff; font-size: 14px; }
+  .admin-page .adm-filters button { border: 1px solid var(--rule); background: var(--card); color: var(--ink); border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
+  .admin-page .adm-filters button.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .admin-page .adm-table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 14px; background: var(--card); }
+  .admin-page .adm-table { width: 100%; border-collapse: collapse; font-size: 15px; color: var(--ink); }
+  .admin-page .adm-table th { text-align: left; color: var(--muted); font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; padding: 12px 14px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+  .admin-page .adm-table td { padding: 12px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .admin-page .adm-table tr:last-child td { border-bottom: 0; }
+  .admin-page .adm-table small { color: var(--muted); }
+  .admin-page .adm-table code { color: var(--accent-ink); font-size: 14px; font-weight: 600; }
+  .admin-page .adm-status { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .admin-page .adm-status.pending { background: rgba(185, 138, 69, .18); color: #6f4812; }
+  .admin-page .adm-status.paid { background: rgba(29, 107, 69, .12); color: var(--good); }
+  .admin-page .adm-status.cancelled { background: var(--paper-2); color: var(--muted); }
+
+  .admin-page .adm-box { border-radius: 14px; padding: 18px 20px; margin-bottom: 20px; }
+  .admin-page .adm-success { background: #e7efe5; border: 1px solid #a9c7b0; color: var(--ink); }
+  .admin-page .adm-success p { color: var(--muted); margin: 6px 0 10px; font-size: 15px; }
+  .admin-page .adm-success pre { white-space: pre-wrap; background: var(--card); border: 1px solid var(--rule); padding: 12px; border-radius: 10px; font-size: 14px; color: var(--ink); margin: 0 0 12px; }
+
+  .admin-page .adm-post-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .admin-page .adm-editor .detail-heading a { color: var(--accent-ink); font-size: 15px; font-weight: 600; }
   .admin-page .adm-fields { display: grid; gap: 14px; padding: 20px; }
-  .admin-page .adm-fields label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; color: #d4e0ed; }
-  .admin-page .adm-fields small { color: #8ca1b7; font-weight: 400; }
-  .admin-page .adm-fields input, .admin-page .adm-fields textarea { background: #071426; border: 1px solid rgba(255,255,255,.16); border-radius: 8px; padding: 10px 12px; color: #fff; font: inherit; font-size: 15px; line-height: 1.55; }
+  .admin-page .adm-fields label { display: grid; gap: 6px; font-size: 15px; font-weight: 600; color: var(--ink); }
+  .admin-page .adm-fields small { color: var(--muted); font-weight: 400; }
   .admin-page .adm-fields .adm-check { display: flex; align-items: center; gap: 10px; }
-  .admin-page .adm-fields code { color: #69c9ff; }
-  .admin-page .adm-saved { color: #8fe0a8; font-size: 14px; }
-  .admin-page .lesson-editor select { width: 100%; margin: 8px 0 20px; background: #071426; border: 1px solid rgba(255,255,255,.16); border-radius: 5px; padding: 10px; color: #fff; }
+  .admin-page .adm-fields .adm-check input { accent-color: var(--accent); width: 18px; height: 18px; }
+  .admin-page .adm-fields code { color: var(--accent-ink); }
+  .admin-page .adm-saved { color: var(--good); font-size: 14px; font-weight: 600; }
 `;
 
 export function AdminPage({ user, logout }) {

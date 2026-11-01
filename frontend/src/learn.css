@@ -1,0 +1,145 @@
+/* Learner area (login, class overview, lesson page) and admin in the same
+   paper/navy theme as the public site. Colours come from :root in site.css. Loaded last; every rule is prefixed with the page root so it
+   beats the older dark styles in styles.css, video.css, learning.css and lesson.css. */
+body:has(.login-page), body:has(.class-page), body:has(.focus-page), body:has(.lesson-page), body:has(.admin-page) { background: var(--paper); color: var(--ink); }
+
+/* Fonts (theme.css forces Roboto with !important) */
+:is(.login-page, .class-page, .focus-page, .lesson-page, .admin-page), :is(.login-page, .class-page, .focus-page, .lesson-page, .admin-page) * { font-family: var(--sans) !important; }
+:is(.login-page, .class-page, .focus-page, .lesson-page, .admin-page) :is(h1, h2, h3) { font-family: var(--serif) !important; font-weight: 600; letter-spacing: -.01em; }
+:is(.login-page, .class-page, .focus-page, .admin-page) :is(.eyebrow, .adm-table th, .adm-table code, .adm-fields code, .adm-success pre, .number, .duration, .sidebar-progress small, .focus-main header p, .activity small, .lesson-summary small, .focus-rail section > small, .next-lesson small, .focus-lesson em, .video-topics b, .calendar) { font-family: var(--mono) !important; }
+:is(.login-page, .class-page, .focus-page, .admin-page) :is(button, a, input, textarea, select):focus-visible { outline: 3px solid var(--accent-ink); outline-offset: 2px; }
+.lesson-page.loading { background: var(--paper); color: var(--ink); font-family: var(--serif) !important; }
+
+/* ---------- Login ---------- */
+.login-page.login-page { background: var(--paper); }
+.login-page .login-glow { display: none; }
+.login-page .login-form { background: var(--card); border: 1px solid var(--rule); border-radius: 20px; box-shadow: 0 24px 60px rgba(10, 26, 46, .12); backdrop-filter: none; color: var(--ink); }
+.login-page .login-mark { font-size: 14px; }
+.login-page .login-mark span { border: 1px solid var(--rule); background-color: var(--card); }
+.login-page .login-mark strong::after { color: var(--ink); font-size: 13px; }
+.login-page .login-form .eyebrow { color: var(--accent-ink); font-size: 13px; font-weight: 500; letter-spacing: .08em; }
+.login-page .login-form > p:not(.eyebrow) { color: var(--muted); font-size: 16px; }
+.login-page .login-form label { color: var(--ink); font-size: 15px; }
+.login-page .login-form input { background: #fffdf8; border: 1px solid var(--control); border-radius: 10px; color: var(--ink); font-size: 16px; }
+.login-page .login-form input:focus { outline: 2px solid var(--accent-ink); border-color: var(--accent-ink); }
+.login-page .login-form button { background: var(--accent); color: var(--on-accent); box-shadow: none; border-radius: 10px; font-size: 16px; font-weight: 600; }
+.login-page .login-form button:hover { background: var(--accent-hover); }
+.login-page .login-form small { color: var(--muted); font-size: 14px; }
+.login-page .login-form small a { color: var(--accent-ink); font-weight: 600; }
+.login-page .notice, .class-page .notice { color: var(--bad); background: #fbe4dc; border-radius: 10px; padding: 10px 12px; margin: 0; }
+
+/* ---------- Class overview (#lop-hoc) ---------- */
+.class-page { background: var(--paper); color: var(--ink); }
+.class-page aside { background: var(--paper-2); color: var(--ink); border-right: 1px solid var(--rule); }
+.class-page .brand>span { border: 1px solid var(--rule); background-color: var(--card); }
+.class-page .brand strong::after { color: var(--ink); font-size: 13px; }
+.class-page .brand small { color: var(--muted); font-size: 13px; }
+.class-page nav a { color: var(--muted); font-size: 15px; font-weight: 500; text-decoration: none; border-radius: 8px; }
+.class-page nav a:hover { color: var(--ink); background: var(--card); }
+.class-page nav .selected { background: var(--card); color: var(--ink); box-shadow: inset 3px 0 0 var(--brass); }
+.class-page .support { border-top: 1px solid var(--rule); font-size: 15px; }
+.class-page .support small { color: var(--muted); font-size: 14px; }
+.class-page .text-button { display: block; margin-top: 12px; padding: 0; border: 0; background: none; color: var(--accent-ink); font-size: 15px; font-weight: 600; cursor: pointer; }
+.class-page .content { background: var(--paper); }
+.class-page .content h1, .class-page .content h2 { color: var(--ink); }
+.class-page .content h1 { font-size: clamp(26px, 3.2vw, 40px); line-height: 1.15; }
+.class-page .content > header { gap: 16px; align-items: flex-start; }
+.class-page .content .profile { flex: 0 0 40px; }
+.class-page .content .eyebrow { color: var(--accent-ink); font-size: 13px; font-weight: 500; letter-spacing: .08em; }
+.class-page .content .profile { background: var(--night); color: var(--night-ink); font-size: 14px; }
+.class-page .content .hero { background: var(--night); color: var(--night-ink); border-left: 0; border-radius: 20px; padding: 36px 40px; }
+.class-page .content .hero h2 { color: #fff; font-size: 30px; }
+.class-page .content .hero .eyebrow { color: var(--brass-light); }
+.class-page .content .hero p:not(.eyebrow), .class-page .content .hero small { color: var(--night-muted); font-size: 16px; }
+.class-page .content .hero small { font-size: 14px; }
+.class-page .content .progress { background: var(--night-rule); height: 6px; border-radius: 6px; overflow: hidden; }
+.class-page .content .progress i { background: var(--brass-light); }
+.class-page .content .hero button { background: var(--night-btn); color: var(--night); font-size: 16px; font-weight: 600; border-radius: 10px; }
+.class-page .content .hero button:hover { background: var(--night-btn-hover); }
+.class-page .content .section-heading > span { color: var(--muted); font-size: 14px; }
+.class-page .content .lesson-list { border-top: 1px solid var(--rule); }
+.class-page .content .lesson { border-color: var(--rule); color: var(--ink); border-radius: 10px; }
+.class-page .content .lesson:hover, .class-page .content .lesson.active { background: var(--card); }
+.class-page .content .number { color: var(--accent-ink); font-size: 14px; width: 30px; }
+.class-page .content .lesson-copy strong { font-size: 16px; }
+.class-page .content .lesson-copy small { color: var(--muted); font-size: 14px; }
+.class-page .content .duration { color: var(--muted); font-size: 13px; }
+.class-page .content .live { border-color: var(--rule); color: var(--ink); }
+.class-page .content .calendar { background: var(--card); border: 1px solid var(--rule); color: var(--ink); width: 64px; height: 64px; }
+.class-page .content .calendar b { font-size: 14px; }
+.class-page .content .calendar span { font-size: 9px; color: var(--muted); }
+.class-page .content .live strong { font-size: 15px; }
+.class-page .content .live p { color: var(--muted); font-size: 14px; }
+.class-page .content .live small { color: var(--accent-ink); font-size: 13px; }
+.class-page .content .outline { background: transparent; color: var(--ink); border: 1px solid var(--control); border-radius: 10px; font-size: 15px; }
+.class-page .content .outline:hover { background: var(--paper-2); }
+main.loading { background: var(--paper); color: var(--ink); font-family: var(--serif) !important; }
+
+/* ---------- Lesson page (#lesson-N) ---------- */
+.focus-page { background: var(--paper); color: var(--ink); }
+.focus-page .course-header { background: var(--paper); border-bottom: 1px solid var(--rule); }
+.focus-page .back-button { color: var(--accent-ink); font-size: 15px; font-weight: 600; }
+.focus-page .lesson-brand { color: var(--ink); font-size: 15px; font-weight: 600; }
+.focus-page .lesson-brand img { background: var(--card); border: 1px solid var(--rule); }
+
+.focus-page .focus-sidebar, .focus-page .focus-rail { background: var(--card); border-color: var(--rule); }
+.focus-page .sidebar-progress small, .focus-page .focus-rail section > small, .focus-page .activity small, .focus-page .lesson-summary small, .focus-page .focus-main header p {
+  color: var(--accent-ink); font-size: 13px; font-weight: 500; letter-spacing: .08em;
+}
+.focus-page .sidebar-progress strong { color: var(--ink); font-size: 15px; }
+.focus-page .sidebar-progress i { background: var(--paper-2); }
+.focus-page .sidebar-progress b { background: var(--brass); }
+.focus-page .focus-lesson { color: var(--muted); font-size: 15px; line-height: 1.4; }
+.focus-page .focus-lesson:hover:not(:disabled) { background: var(--paper); color: var(--ink); }
+.focus-page .focus-lesson.active { background: var(--paper-2); color: var(--ink); font-weight: 600; }
+.focus-page .focus-lesson em { flex-basis: 30px; height: 30px; background: var(--paper-2); color: var(--ink); font-size: 12px; }
+.focus-page .focus-lesson.active em { background: var(--accent); color: var(--on-accent); }
+.focus-page .focus-lesson small { color: var(--muted); font-size: 13px; font-weight: 400; }
+.focus-page .focus-lesson:disabled { opacity: .5; }
+
+.focus-page .focus-main { background: var(--card); border: 1px solid var(--rule); }
+.focus-page .focus-main h1 { color: var(--ink); font-size: clamp(30px, 3.2vw, 42px); line-height: 1.15; }
+.focus-page .focus-video, .focus-page .activity, .focus-page .lesson-summary { background: var(--paper); border: 1px solid var(--rule); border-radius: 14px; }
+.focus-page .focus-video > div > b { background: var(--accent); color: var(--on-accent); width: 28px; height: 28px; font-size: 12px; }
+.focus-page .focus-video strong { color: var(--ink); font-size: 16px; }
+.focus-page .focus-video small { color: var(--muted); font-size: 13px; }
+.focus-page .portrait-video { background: var(--night); }
+.focus-page .lesson-summary h2 { color: var(--ink); font-size: 22px; line-height: 1.3; }
+.focus-page .lesson-summary p { color: var(--muted); font-size: 15px; }
+.focus-page .video-topics span { background: var(--card); border: 1px solid var(--rule); color: var(--ink); font-size: 15px; }
+.focus-page .video-topics b { color: var(--accent-ink); }
+.focus-page .activity h2 { color: var(--ink); font-size: 22px; }
+.focus-page .activity p { color: var(--muted); font-size: 15px; }
+.focus-page .activity-toggle-icon { background: var(--paper-2); color: var(--ink); }
+.focus-page .vocabulary-list div, .focus-page .quiz-question { background: var(--card); border: 1px solid var(--rule); color: var(--ink); font-size: 15px; }
+.focus-page .vocabulary-list b { color: var(--ink); font-size: 16px; }
+.focus-page .vocabulary-list small { color: var(--muted); font-size: 14px; }
+.focus-page .vocabulary-list span { color: var(--muted); }
+.focus-page .quiz-question p { color: var(--ink); font-size: 16px; }
+.focus-page .quiz-question label { color: var(--ink); font-size: 15px; }
+.focus-page .quiz-question input { accent-color: var(--accent); }
+.focus-page .quiz-question label.quiz-correct { background: rgba(29, 107, 69, .12); color: var(--good); }
+.focus-page .quiz-question label.quiz-wrong { background: rgba(143, 42, 10, .1); color: var(--bad); }
+.focus-page .quiz-submit { background: var(--paper-2); color: var(--ink); font-size: 15px; }
+.focus-page .quiz-submit strong { color: var(--good); font-size: 15px; }
+.focus-page .quiz-submit button, .focus-page .focus-rail section > button { background: var(--accent); color: var(--on-accent); font-size: 15px; font-weight: 600; border-radius: 10px; }
+.focus-page .next-lesson { background: var(--night); border-radius: 16px; }
+.focus-page .next-lesson small { color: var(--night-muted); font-size: 13px; letter-spacing: .08em; }
+.focus-page .next-lesson strong { color: #fff; font-size: 17px; font-family: var(--serif) !important; }
+.focus-page .next-lesson button { background: var(--night-btn); color: var(--night); font-size: 15px; font-weight: 600; border-radius: 10px; padding: 12px 16px; }
+.focus-page :is(.quiz-submit, .focus-rail section) button:hover { background: var(--accent-hover); }
+.focus-page .next-lesson button:hover { background: var(--night-btn-hover); }
+
+.focus-page .focus-rail nav { border-bottom: 1px solid var(--rule); }
+.focus-page .focus-rail nav button { color: var(--muted); font-size: 14px; font-weight: 600; }
+.focus-page .focus-rail nav .selected { color: var(--ink); border-color: var(--brass); }
+.focus-page .focus-rail h3 { color: var(--ink); font-size: 18px; }
+.focus-page .focus-rail textarea { background: #fffdf8; border: 1px solid var(--control); color: var(--ink); font-size: 15px; line-height: 1.6; }
+.focus-page .focus-rail section > p { color: var(--muted); font-size: 13px; }
+.focus-page .rail-file { background: var(--paper); border: 1px solid var(--rule); color: var(--ink); font-size: 14px; font-weight: 500; }
+.focus-page .rail-file:hover { border-color: var(--control); }
+.focus-page .course-footer { border-top: 1px solid var(--rule); color: var(--muted); font-size: 14px; }
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.login-page, .class-page, .focus-page) * { transition: none !important; }
+}

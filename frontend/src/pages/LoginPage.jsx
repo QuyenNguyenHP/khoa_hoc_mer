@@ -58,7 +58,7 @@ export function LoginPage({ onLogin }) {
         </button>
 
         <small>
-          Chưa có tài khoản? <a href="#gioi-thieu" style={{ color: '#69c9ff' }}>Xem khóa học và đăng ký</a>
+          Chưa có tài khoản? <a href="#gioi-thieu">Xem khóa học và đăng ký</a>
         </small>
       </form>
     </main>

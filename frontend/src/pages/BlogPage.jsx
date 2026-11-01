@@ -24,7 +24,7 @@ function BlogList() {
   const categories = [...new Set((posts || []).map(post => post.category).filter(Boolean))];
   const shown = (posts || []).filter(post => !category || post.category === category);
   return <>
-    <section className="s-blog-hero"><div className="s-wrap"><p className="s-tag">Blog</p><h1>Kiến thức nghề Merchandiser</h1><p>Quy trình, thuật ngữ và kinh nghiệm làm việc trong ngành may mặc xuất khẩu.</p></div></section>
+    <section className="s-blog-hero"><div className="s-wrap"><p className="s-tag">Blog</p><h1>Kiến thức nghề <em>Merchandiser</em></h1><p>Quy trình, thuật ngữ và kinh nghiệm làm việc trong ngành may mặc xuất khẩu.</p></div></section>
     <section className="s-section" style={{ paddingTop: 48 }}>
       <div className="s-wrap">
         {categories.length > 1 && <div className="s-filters" role="group" aria-label="Lọc theo chủ đề">

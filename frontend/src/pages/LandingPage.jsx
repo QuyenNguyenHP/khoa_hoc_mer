@@ -62,21 +62,21 @@ export function LandingPage({ user }) {
 
       <section className="s-section">
         <div className="s-wrap">
-          <div className="s-section-head"><p className="s-tag">Dành cho ai</p><h2>Khóa học phù hợp với bạn nếu…</h2></div>
+          <div className="s-section-head"><p className="s-tag">Dành cho ai</p><h2>Khóa học phù hợp với bạn <em>nếu…</em></h2></div>
           <div className="s-cards">{AUDIENCE.map(item => <article className="s-card" key={item.title}><div className="s-icon" aria-hidden="true">{item.icon}</div><h3>{item.title}</h3><p>{item.text}</p><ul>{item.points.map(point => <li key={point}>{point}</li>)}</ul></article>)}</div>
         </div>
       </section>
 
       <section className="s-section s-section-soft">
         <div className="s-wrap">
-          <div className="s-section-head"><p className="s-tag">Sau khóa học</p><h2>Bạn sẽ làm được gì</h2><p>Bài thực hành xuyên suốt: quản lý một đơn hàng áo sơ mi từ Tech Pack đến shipment.</p></div>
+          <div className="s-section-head"><p className="s-tag">Sau khóa học</p><h2>Bạn sẽ <em>làm được</em> gì</h2><p>Bài thực hành xuyên suốt: quản lý một đơn hàng áo sơ mi từ Tech Pack đến shipment.</p></div>
           <div className="s-cards">{OUTCOMES.map(item => <article className="s-card" key={item.title}><div className="s-icon" aria-hidden="true">{item.icon}</div><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
         </div>
       </section>
 
       <section className="s-section" id="noi-dung">
         <div className="s-wrap">
-          <div className="s-section-head"><p className="s-tag">Nội dung</p><h2>10 buổi học theo lộ trình</h2><p>Mỗi buổi gồm video bài giảng, tài liệu PDF, từ vựng trọng tâm và câu hỏi ôn tập.</p></div>
+          <div className="s-section-head"><p className="s-tag">Nội dung</p><h2><em>10 buổi</em> học theo lộ trình</h2><p>Mỗi buổi gồm video bài giảng, tài liệu PDF, từ vựng trọng tâm và câu hỏi ôn tập.</p></div>
           {lessons.length ? <div className="s-curriculum">{lessons.map(lesson => <article className="s-lesson" key={lesson.id}>
             <span className="s-lesson-no">{String(lesson.id).padStart(2, '0')}</span>
             <div><h3>{lesson.title}</h3><p>{lesson.objective}</p>{lesson.duration && <small>{lesson.duration}</small>}</div>
@@ -96,7 +96,7 @@ export function LandingPage({ user }) {
 
       <section className="s-section">
         <div className="s-wrap">
-          <div className="s-section-head"><p className="s-tag">Đăng ký</p><h2>Bắt đầu học trong 3 bước</h2></div>
+          <div className="s-section-head"><p className="s-tag">Đăng ký</p><h2>Bắt đầu học trong <em>3 bước</em></h2></div>
           <div className="s-steps">
             <article className="s-step"><h3>Điền thông tin</h3><p>Bấm “Đăng ký học”, nhập họ tên, email và số điện thoại.</p></article>
             <article className="s-step"><h3>Chuyển khoản qua QR</h3><p>Quét mã QR {price}. Nội dung chuyển khoản là mã riêng của bạn.</p></article>
