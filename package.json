@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "concurrently \"npm:dev:api\" \"npm:dev:web\"",
-    "dev:api": "node --watch backend/index.js",
+    "dev:api": "node --watch backend/index.js --port 3002",
     "dev:web": "vite --host 0.0.0.0 --config frontend/vite.config.js",
     "build": "vite build --config frontend/vite.config.js",
     "start": "node backend/index.js"

@@ -46,8 +46,8 @@ export function RegisterDialog({ info, onClose }) {
           <button className="s-btn s-btn-primary" disabled={sending}>{sending ? 'Đang gửi…' : 'Tiếp tục thanh toán →'}</button>
         </form>
       </> : <>
-        <h2 id="register-title">Chuyển khoản để hoàn tất</h2>
-        <p>Quét mã QR bằng ứng dụng ngân hàng. Số tiền và nội dung đã điền sẵn.</p>
+        <h2 id="register-title">{order.bank ? 'Chuyển khoản để hoàn tất' : 'Đã ghi nhận đăng ký'}</h2>
+        {order.bank && <p>Quét mã QR bằng ứng dụng ngân hàng. Số tiền và nội dung đã điền sẵn.</p>}
         {order.bank ? <div className="s-pay">
           <img src={order.qrUrl} alt={`Mã QR chuyển khoản ${formatPrice(order.amount)}, nội dung ${order.transferNote}`}/>
           <dl>

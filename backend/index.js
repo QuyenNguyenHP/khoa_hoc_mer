@@ -8,7 +8,9 @@ const path = require('path');
 const courseIndex = require('./course-index.json');
 
 const app = express();
-const port = process.env.PORT || 3002;
+// `--port 3002` (used by npm run dev) wins over PORT, so a PORT meant for the web server is ignored.
+const portArg = process.argv.indexOf('--port');
+const port = (portArg > 0 && process.argv[portArg + 1]) || process.env.PORT || 3002;
 const secret = process.env.JWT_SECRET || 'change-this-before-production';
 const dataPath = path.join(__dirname, 'data.json');
 const uploadPath = path.join(__dirname, 'uploads');
