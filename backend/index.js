@@ -7,19 +7,21 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const courseIndex = require('./course-index.json');
+const { paths: storage, lessonMediaPath, prepareStorage } = require('./storage');
 
 const app = express();
 // `--port 3002` (used by npm run dev) wins over PORT, so a PORT meant for the web server is ignored.
 const portArg = process.argv.indexOf('--port');
 const port = (portArg > 0 && process.argv[portArg + 1]) || process.env.PORT || 3002;
 const secret = process.env.JWT_SECRET || 'change-this-before-production';
-const dataPath = path.join(__dirname, 'data.json');
-const uploadPath = path.join(__dirname, 'uploads');
+// Live data (accounts, orders, blog, uploads, videos) lives in backend/storage, outside Git.
+prepareStorage(courseIndex);
+const dataPath = storage.data;
+const avatarPath = storage.avatars;
+const uploadPath = path.join(__dirname, 'uploads'); // temporary video uploads
+// Lesson text (lesson.json, quiz, vocabulary) is course content kept in Git.
 const lessonsPath = path.join(__dirname, 'lessons');
-// Profile pictures: backend/private is git-ignored and already a Docker volume.
-const avatarPath = path.join(__dirname, 'private', 'avatars');
 fs.mkdirSync(uploadPath, { recursive: true });
-fs.mkdirSync(avatarPath, { recursive: true });
 const upload = multer({
   storage: multer.diskStorage({
     destination: (_req, _file, callback) => callback(null, uploadPath),
@@ -52,14 +54,17 @@ fs.watch(lessonsPath, { recursive: true }, () => {
 });
 
 function writeData(data) { fs.writeFileSync(dataPath, JSON.stringify(data, null, 2)); }
+// First start: create only the admin account, from ADMIN_EMAIL / ADMIN_PASSWORD in .env.
+// Without ADMIN_PASSWORD a random one is generated and printed once in the log.
 function readData() {
   if (fs.existsSync(dataPath)) return JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-  const initial = { users: [
-    { id: 'admin-1', name: 'Quản trị viên', email: 'admin@khoahoc.local', passwordHash: bcrypt.hashSync('admin123', 10), role: 'admin', completedLessons: [] },
-    { id: 'student-1', name: 'Nguyễn Minh Anh', email: 'anh@example.com', passwordHash: bcrypt.hashSync('hocvien123', 10), role: 'student', completedLessons: [] }
-  ] };
-  writeData(initial); return initial;
+  const email = String(process.env.ADMIN_EMAIL || 'admin@khoahoc.local').trim().toLowerCase();
+  let password = process.env.ADMIN_PASSWORD;
+  if (!password) { password = crypto.randomBytes(9).toString('base64url'); console.log(`First admin account: ${email} / ${password} (change this password after signing in)`); }
+  const initial = { users: [{ id: 'admin-1', name: 'Quản trị viên', email, passwordHash: bcrypt.hashSync(password, 10), role: 'admin', completedLessons: [] }] };
+  writeData(initial); console.log(`Storage: created data.json with admin ${email}`); return initial;
 }
+readData();
 function findUser(id) { return readData().users.find(item => item.id === id); }
 function studentCourse(student) {
   const completed = student.completedLessons || [];
@@ -69,7 +74,8 @@ function studentCourse(student) {
 function auth(req, res, next) { try { req.auth = jwt.verify(req.headers.authorization?.replace('Bearer ', ''), secret); next(); } catch { res.status(401).json({ message: 'Vui lòng đăng nhập lại.' }); } }
 function admin(req, res, next) { return req.auth.role === 'admin' ? next() : res.status(403).json({ message: 'Chỉ quản trị viên có quyền này.' }); }
 function studentSummary(student) { const { passwordHash, ...safe } = student; return { ...safe, progress: Math.round((student.completedLessons || []).length / lessons.length * 100) }; }
-function lessonDirectory(lesson) { return path.join(lessonsPath, lesson.directory); }
+// Videos and PDFs of a lesson (in storage, seeded once from the repo).
+function lessonDirectory(lesson) { return lessonMediaPath(lesson.directory); }
 function materialDirectory(lesson) { return path.join(lessonDirectory(lesson), 'materials'); }
 function materialsFor(lesson) {
   const directory = materialDirectory(lesson); fs.mkdirSync(directory, { recursive: true });

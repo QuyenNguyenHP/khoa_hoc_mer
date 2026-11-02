@@ -10,6 +10,6 @@
   "instructor": {
     "name": "Cô Mer",
     "role": "Giảng viên nghiệp vụ Merchandiser",
-    "bio": "Giảng viên nghiệp vụ Merchandiser với kinh nghiệm thực chiến tại công ty may mặc xuất khẩu. (Cập nhật phần giới thiệu này trong backend/site-config.json.)"
+    "bio": "Giảng viên nghiệp vụ Merchandiser với kinh nghiệm thực chiến tại công ty may mặc xuất khẩu. (Cập nhật phần giới thiệu này trong backend/storage/site-config.json.)"
   }
 }

@@ -1,0 +1,11 @@
+# Keep images small and free of live data or secrets.
+.git
+.env
+.claude
+node_modules
+dist
+frontend/dist
+backend/storage
+backend/uploads
+backend/private
+backend/blog-images

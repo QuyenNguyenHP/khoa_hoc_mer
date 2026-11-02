@@ -4,17 +4,15 @@ const path = require('path');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 
-const configPath = path.join(__dirname, 'site-config.json');
-const blogPath = path.join(__dirname, 'blog.json');
-// Blog cover images uploaded by the content agent (git-ignored, mounted as a Docker volume).
-const blogImagesPath = path.join(__dirname, 'blog-images');
-fs.mkdirSync(blogImagesPath, { recursive: true });
+const { paths: storage } = require('./storage');
+
+// All live data is in backend/storage (outside Git), see storage.js.
+const configPath = storage.siteConfig;
+const blogPath = storage.blog;
+const ordersPath = storage.orders; // customers' names, emails and phone numbers
+const blogImagesPath = storage.blogImages;
 const IMAGE_TYPES = { 'image/png': '.png', 'image/jpeg': '.jpg', 'image/webp': '.webp', 'image/gif': '.gif' };
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
-// Orders hold customers' names, emails and phone numbers: backend/private/ is git-ignored.
-const privatePath = path.join(__dirname, 'private');
-const ordersPath = path.join(privatePath, 'orders.json');
-fs.mkdirSync(privatePath, { recursive: true });
 
 function readJson(file, fallback) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return fallback; }

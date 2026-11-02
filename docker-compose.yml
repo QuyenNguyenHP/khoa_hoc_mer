@@ -4,16 +4,15 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     restart: unless-stopped
+    # All live data (accounts, orders, blog, uploads, videos) is in this one folder.
+    # It is not in Git, so `git pull` and rebuilds never touch it.
     volumes:
-      - ./backend/data.json:/app/backend/data.json
-      - ./backend/lessons:/app/backend/lessons
-      - ./backend/blog.json:/app/backend/blog.json
-      - ./backend/site-config.json:/app/backend/site-config.json
-      - ./backend/private:/app/backend/private
-      - ./backend/blog-images:/app/backend/blog-images
-    # Secrets come from .env next to this file (git-ignored), see DEPLOY.md.
+      - ./backend/storage:/app/backend/storage
+    # Secrets and the first admin account come from .env (created by deploy.sh, git-ignored).
     environment:
-      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env (run ./deploy.sh)}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
       CONTENT_AGENT_KEY: ${CONTENT_AGENT_KEY:-}
     expose:
       - "3002"
@@ -25,5 +24,6 @@ services:
     restart: unless-stopped
     depends_on:
       - api
+    # Apache proxies the domain to this port; it is only reachable from the server itself.
     ports:
       - "127.0.0.1:18090:80"

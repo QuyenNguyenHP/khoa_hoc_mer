@@ -1,5 +1,9 @@
 node_modules/
-backend/private/
 backend/uploads/
-backend/blog-images/
 .env
+# Live data: accounts, orders, blog, uploads, videos (see backend/storage.js)
+backend/storage/
+# Old data folders from before backend/storage (kept locally, never committed)
+backend/private/
+backend/blog-images/
+backup-old-layout-*/
