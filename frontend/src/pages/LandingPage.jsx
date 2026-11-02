@@ -18,7 +18,7 @@ const FAQ = [
   ['Học như thế nào?', 'Bạn xem video bài giảng quay sẵn trên website, tải tài liệu PDF, làm câu hỏi ôn tập và ghi chú. Bài sau mở khi bạn hoàn thành bài trước để học đúng lộ trình.'],
   ['Có được hỏi giảng viên không?', 'Có. Khóa học có 2 buổi hỏi đáp trực tuyến (giữa khóa và cuối khóa). Bạn có thể gửi câu hỏi trước ngay trong trang học.'],
   ['Thanh toán thế nào?', 'Bấm “Đăng ký học”, điền họ tên, email, số điện thoại, rồi quét mã QR chuyển khoản. Mỗi đăng ký có nội dung chuyển khoản riêng để chúng tôi đối soát.'],
-  ['Bao lâu thì tôi nhận được tài khoản?', 'Sau khi xác nhận đã nhận tiền, chúng tôi tạo tài khoản và gửi thông tin đăng nhập tới email bạn đăng ký. Nếu cần gấp, hãy nhắn Zalo.'],
+  ['Bao lâu thì tôi nhận được tài khoản?', 'Sau khi xác nhận thanh toán, chúng tôi tạo tài khoản và gửi thông tin đăng nhập tới số Zalo/điện thoại bạn đăng ký.'],
   ['Nên học trên thiết bị nào?', 'Nên dùng laptop để xem video và tài liệu thoải mái nhất. Điện thoại vẫn học được khi bạn di chuyển.']
 ];
 
@@ -100,7 +100,7 @@ export function LandingPage({ user }) {
           <div className="s-steps">
             <article className="s-step"><h3>Điền thông tin</h3><p>Bấm “Đăng ký học”, nhập họ tên, email và số điện thoại.</p></article>
             <article className="s-step"><h3>Chuyển khoản qua QR</h3><p>Quét mã QR {price}. Nội dung chuyển khoản là mã riêng của bạn.</p></article>
-            <article className="s-step"><h3>Nhận tài khoản và học</h3><p>Chúng tôi xác nhận và gửi tài khoản đăng nhập qua email.</p></article>
+            <article className="s-step"><h3>Nhận tài khoản và học</h3><p>Chúng tôi xác nhận thanh toán và gửi tài khoản đăng nhập qua Zalo/điện thoại.</p></article>
           </div>
         </div>
       </section>

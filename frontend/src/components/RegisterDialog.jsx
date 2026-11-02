@@ -57,8 +57,8 @@ export function RegisterDialog({ info, onClose }) {
             <div><dt>Số tiền</dt><dd>{formatPrice(order.amount)}</dd></div>
             <div><dt>Nội dung chuyển khoản</dt><dd><span className="s-code">{order.transferNote}<button onClick={() => copy('note', order.transferNote)}>{copied === 'note' ? 'Đã chép' : 'Chép'}</button></span></dd></div>
           </dl>
-        </div> : <p className="s-pay-note">Mã đăng ký của bạn là <span className="s-code">{order.code}</span>. Thông tin chuyển khoản đang được cập nhật, vui lòng nhắn Zalo để nhận số tài khoản.</p>}
-        <p className="s-pay-note">Sau khi nhận được tiền, chúng tôi sẽ gửi tài khoản đăng nhập tới email của bạn. Giữ đúng nội dung <b>{order.transferNote}</b> để đơn được xác nhận nhanh.</p>
+        </div> : <p className="s-pay-note">Mã đăng ký của bạn là <span className="s-code">{order.code}</span>. Thông tin chuyển khoản đang được cập nhật, xin vui lòng chờ chúng tôi một chút.</p>}
+        <p className="s-pay-note">Sau khi xác nhận thanh toán, chúng tôi sẽ gửi thông tin tài khoản tới số Zalo/điện thoại của bạn. Giữ đúng nội dung <b>{order.transferNote}</b> để đơn được xác nhận nhanh.</p>
         <div className="s-hero-actions" style={{ marginTop: 18 }}>
           {zalo && <a className="s-btn s-btn-primary" href={zalo} target="_blank" rel="noreferrer">Báo đã chuyển qua Zalo</a>}
           <button className="s-btn s-btn-line" onClick={onClose}>Đóng</button>
