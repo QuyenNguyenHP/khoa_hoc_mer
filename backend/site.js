@@ -61,9 +61,22 @@ function slugify(text) {
 }
 function excerptOf(post) {
   if (post.excerpt) return post.excerpt;
-  const text = post.content.replace(/^#+\s.*$/gm, '').replace(/^-\s/gm, '').replace(/\s+/g, ' ').trim();
+  const text = post.content.replace(/^!\[[^\]]*\]\(\S+\)$/gm, '').replace(/^#+\s.*$/gm, '').replace(/^-\s/gm, '').replace(/\*\*/g, '').replace(/\s+/g, ' ').trim();
   return text.length > 180 ? `${text.slice(0, 177)}...` : text;
 }
+// Saves a base64 blog image (cover) and returns its public URL, or an error message.
+function saveBlogImage(body) {
+  const match = /^data:(image\/(?:png|jpeg|webp|gif));base64,([A-Za-z0-9+/=\s]+)$/.exec(String(body.dataUrl || ''));
+  if (!match) return { error: 'Ảnh phải là PNG, JPEG, WEBP hoặc GIF dạng base64.' };
+  const bytes = Buffer.from(match[2], 'base64');
+  if (!bytes.length || bytes.length > MAX_IMAGE_BYTES) return { error: 'Ảnh phải nhỏ hơn 5 MB.' };
+  const base = slugify(path.parse(String(body.filename || 'anh-bia')).name).slice(0, 60);
+  const name = `${Date.now()}-${base}${IMAGE_TYPES[match[1]]}`;
+  fs.writeFileSync(path.join(blogImagesPath, name), bytes);
+  return { url: `/api/blog-images/${name}` };
+}
+const validCover = cover => !cover || /^\/api\/blog-images\/[\w.-]+$/.test(cover) || /^https:\/\/\S+$/.test(cover);
+
 const publicPost = ({ content, ...post }) => ({ ...post, excerpt: excerptOf({ content, ...post }) });
 
 // Very small in-memory limit so the public order form cannot be flooded.
@@ -162,8 +175,19 @@ module.exports = function registerSiteRoutes(app, { auth, admin, readData, write
     const title = String(body.title || '').trim(); const content = String(body.content || '').trim();
     if (!title || title.length > 200) return { error: 'Tiêu đề cần từ 1 đến 200 ký tự.' };
     if (!content || content.length > 50000) return { error: 'Nội dung không được trống (tối đa 50.000 ký tự).' };
-    return { title, content, category: String(body.category || 'Kiến thức nghề').trim().slice(0, 60), excerpt: String(body.excerpt || '').trim().slice(0, 300), published: Boolean(body.published) };
+    const fields = { title, content, category: String(body.category || 'Kiến thức nghề').trim().slice(0, 60), excerpt: String(body.excerpt || '').trim().slice(0, 300), published: Boolean(body.published) };
+    // "cover" is optional: omitted keeps the current image, an empty string removes it.
+    if ('cover' in body) {
+      const cover = String(body.cover || '').trim();
+      if (!validCover(cover)) return { error: 'Ảnh bìa phải là ảnh đã tải lên hoặc một URL https://.' };
+      fields.cover = cover || undefined;
+    }
+    return fields;
   }
+  app.post('/api/admin/blog-image', auth, admin, (req, res) => {
+    const saved = saveBlogImage(req.body); if (saved.error) return res.status(400).json({ message: saved.error });
+    res.status(201).json(saved);
+  });
   app.get('/api/admin/blog', auth, admin, (_req, res) => res.json(posts().sort((a, b) => b.createdAt.localeCompare(a.createdAt))));
   app.post('/api/admin/blog', auth, admin, (req, res) => {
     const fields = validPost(req.body); if (fields.error) return res.status(400).json({ message: fields.error });
@@ -202,23 +226,15 @@ module.exports = function registerSiteRoutes(app, { auth, admin, readData, write
     next();
   }
   app.post('/api/agent/upload', agentAuth, (req, res) => {
-    const match = /^data:(image\/(?:png|jpeg|webp|gif));base64,([A-Za-z0-9+/=\s]+)$/.exec(String(req.body.dataUrl || ''));
-    if (!match) return res.status(400).json({ message: 'dataUrl phải là ảnh PNG, JPEG, WEBP hoặc GIF dạng base64.' });
-    const bytes = Buffer.from(match[2], 'base64');
-    if (!bytes.length || bytes.length > MAX_IMAGE_BYTES) return res.status(400).json({ message: 'Ảnh phải nhỏ hơn 5 MB.' });
-    const base = slugify(path.parse(String(req.body.filename || 'anh-bia')).name).slice(0, 60);
-    const name = `${Date.now()}-${base}${IMAGE_TYPES[match[1]]}`;
-    fs.writeFileSync(path.join(blogImagesPath, name), bytes);
-    res.status(201).json({ url: `/api/blog-images/${name}` });
+    const saved = saveBlogImage(req.body); if (saved.error) return res.status(400).json({ message: saved.error });
+    res.status(201).json(saved);
   });
   app.post('/api/agent/blog', agentAuth, (req, res) => {
     const fields = validPost(req.body); if (fields.error) return res.status(400).json({ message: fields.error });
-    const cover = String(req.body.cover || '').trim();
-    if (cover && !/^\/api\/blog-images\/[\w.-]+$/.test(cover) && !/^https:\/\/\S+$/.test(cover)) return res.status(400).json({ message: 'cover phải là URL trả về từ /api/agent/upload hoặc một URL https://.' });
     const list = posts(); const slug = slugify(req.body.slug || fields.title);
     if (list.some(item => item.slug === slug)) return res.status(400).json({ message: `Slug "${slug}" đã tồn tại, hãy chọn slug khác.` });
     const now = new Date().toISOString();
-    const post = { id: `post-${Date.now()}`, slug, ...fields, published: false, cover: cover || undefined, author: 'Claude (agent)', createdAt: now, updatedAt: now };
+    const post = { id: `post-${Date.now()}`, slug, ...fields, published: false, author: 'Claude (agent)', createdAt: now, updatedAt: now };
     list.push(post); savePosts(list); res.status(201).json(post);
   });
 };

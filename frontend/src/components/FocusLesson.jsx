@@ -44,25 +44,22 @@ const FOCUS_LESSON_STYLES = `
   @media (max-width: 720px) { .vocabulary-list { grid-template-columns: 1fr; } }
   @media (max-width: 720px) { .focus-main { margin: 12px; padding: 24px 16px 40px !important; border-radius: 14px; } }
   @media (min-width: 1101px) {
+    /* Both side columns start level with the lesson card and stick to the top while scrolling.
+       The course outline shows every lesson at full height (no inner scrollbar). */
     .focus-layout { align-items: start; }
-    .focus-sidebar {
+    .focus-sidebar, .focus-rail {
       position: sticky !important;
-      top: 50vh !important;
-      transform: translateY(-50%);
-      min-height: 620px;
-      max-height: calc(100vh - 32px);
+      top: 16px !important;
+      margin-top: 8px;
       border: 1px solid rgba(105, 201, 255, 0.18);
       border-radius: 18px;
-      overflow-y: auto;
     }
+    .focus-sidebar { padding: 18px 12px !important; }
+    .focus-sidebar .sidebar-progress { padding-bottom: 14px; }
+    .focus-sidebar .focus-lesson { padding: 8px 10px; }
     .focus-rail {
-      position: sticky !important;
-      top: 50vh !important;
-      transform: translateY(-50%);
       min-height: 620px;
       max-height: calc(100vh - 32px);
-      border: 1px solid rgba(105, 201, 255, 0.18);
-      border-radius: 18px;
       overflow-y: auto;
     }
     .focus-rail textarea { min-height: 500px; }

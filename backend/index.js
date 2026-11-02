@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const courseIndex = require('./course-index.json');
 
 const app = express();
@@ -15,7 +16,10 @@ const secret = process.env.JWT_SECRET || 'change-this-before-production';
 const dataPath = path.join(__dirname, 'data.json');
 const uploadPath = path.join(__dirname, 'uploads');
 const lessonsPath = path.join(__dirname, 'lessons');
+// Profile pictures: backend/private is git-ignored and already a Docker volume.
+const avatarPath = path.join(__dirname, 'private', 'avatars');
 fs.mkdirSync(uploadPath, { recursive: true });
+fs.mkdirSync(avatarPath, { recursive: true });
 const upload = multer({
   storage: multer.diskStorage({
     destination: (_req, _file, callback) => callback(null, uploadPath),
@@ -30,6 +34,8 @@ app.set('trust proxy', 'loopback, linklocal, uniquelocal');
 app.use(cors());
 // The content agent sends cover images as base64, so its routes accept bigger bodies.
 app.use('/api/agent', express.json({ limit: '8mb' }));
+app.use('/api/account/avatar', express.json({ limit: '1mb' }));
+app.use('/api/admin/blog-image', express.json({ limit: '8mb' }));
 app.use(express.json());
 
 function loadLessons() {
@@ -58,7 +64,7 @@ function findUser(id) { return readData().users.find(item => item.id === id); }
 function studentCourse(student) {
   const completed = student.completedLessons || [];
   const nextLesson = lessons.find(item => !completed.includes(item.id))?.id || lessons.length + 1;
-  return { title: courseIndex.course.title, student: { name: student.name, email: student.email }, instructor: { name: 'Cô Mer', bio: 'Giảng viên nghiệp vụ Merchandiser với kinh nghiệm thực chiến trong ngành may.' }, description: courseIndex.course.description, progress: Math.round(completed.length / lessons.length * 100), lessons: lessons.map(item => ({ ...item, completed: completed.includes(item.id), unlocked: item.id <= nextLesson })), liveSessions: [{ id: 1, title: 'Q&A giữa khóa: Gỡ vướng thực hành', date: 'Thứ Bảy, 19:30', status: 'Sắp diễn ra' }, { id: 2, title: 'Q&A cuối khóa: Định hướng cá nhân', date: 'Thứ Bảy, 19:30', status: 'Mở sau buổi 8' }] };
+  return { title: courseIndex.course.title, student: { name: student.name, email: student.email, avatar: student.avatar || null }, instructor: { name: 'Cô Mer', bio: 'Giảng viên nghiệp vụ Merchandiser với kinh nghiệm thực chiến trong ngành may.' }, description: courseIndex.course.description, progress: Math.round(completed.length / lessons.length * 100), lessons: lessons.map(item => ({ ...item, completed: completed.includes(item.id), unlocked: item.id <= nextLesson })), liveSessions: [{ id: 1, title: 'Q&A giữa khóa: Gỡ vướng thực hành', date: 'Thứ Bảy, 19:30', status: 'Sắp diễn ra' }, { id: 2, title: 'Q&A cuối khóa: Định hướng cá nhân', date: 'Thứ Bảy, 19:30', status: 'Mở sau buổi 8' }] };
 }
 function auth(req, res, next) { try { req.auth = jwt.verify(req.headers.authorization?.replace('Bearer ', ''), secret); next(); } catch { res.status(401).json({ message: 'Vui lòng đăng nhập lại.' }); } }
 function admin(req, res, next) { return req.auth.role === 'admin' ? next() : res.status(403).json({ message: 'Chỉ quản trị viên có quyền này.' }); }
@@ -73,7 +79,38 @@ function materialsFor(lesson) {
 app.post('/api/auth/login', (req, res) => {
   const found = readData().users.find(item => item.email.toLowerCase() === String(req.body.email || '').toLowerCase());
   if (!found || !bcrypt.compareSync(String(req.body.password || ''), found.passwordHash)) return res.status(401).json({ message: 'Email hoặc mật khẩu không đúng.' });
-  res.json({ token: jwt.sign({ id: found.id, role: found.role }, secret, { expiresIn: '8h' }), user: { id: found.id, name: found.name, email: found.email, role: found.role } });
+  res.json({ token: jwt.sign({ id: found.id, role: found.role }, secret, { expiresIn: '8h' }), user: { id: found.id, name: found.name, email: found.email, role: found.role, avatar: found.avatar || null } });
+});
+
+// ---- Own account (any signed-in user) ----
+app.put('/api/account/password', auth, (req, res) => {
+  const data = readData(); const found = data.users.find(item => item.id === req.auth.id);
+  if (!found) return res.status(401).json({ message: 'Tài khoản không tồn tại.' });
+  const current = String(req.body.currentPassword || ''); const next = String(req.body.newPassword || '');
+  if (!bcrypt.compareSync(current, found.passwordHash)) return res.status(400).json({ message: 'Mật khẩu hiện tại không đúng.' });
+  if (next.length < 8 || next.length > 100) return res.status(400).json({ message: 'Mật khẩu mới cần từ 8 đến 100 ký tự.' });
+  if (next === current) return res.status(400).json({ message: 'Mật khẩu mới phải khác mật khẩu hiện tại.' });
+  found.passwordHash = bcrypt.hashSync(next, 10); writeData(data); res.json({ message: 'Đã đổi mật khẩu.' });
+});
+app.post('/api/account/avatar', auth, (req, res) => {
+  const data = readData(); const found = data.users.find(item => item.id === req.auth.id);
+  if (!found) return res.status(401).json({ message: 'Tài khoản không tồn tại.' });
+  const match = /^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/=]+)$/.exec(String(req.body.dataUrl || ''));
+  if (!match) return res.status(400).json({ message: 'Ảnh phải là PNG, JPEG hoặc WEBP.' });
+  const bytes = Buffer.from(match[2], 'base64');
+  if (!bytes.length || bytes.length > 512 * 1024) return res.status(400).json({ message: 'Ảnh đại diện phải nhỏ hơn 512 KB.' });
+  // Random, unguessable name: <img> tags cannot send the login token.
+  const name = `${crypto.randomBytes(16).toString('hex')}.${match[1] === 'jpeg' ? 'jpg' : match[1]}`;
+  fs.writeFileSync(path.join(avatarPath, name), bytes);
+  const old = found.avatar && path.join(avatarPath, path.basename(found.avatar));
+  found.avatar = `/api/avatars/${name}`; writeData(data);
+  if (old && fs.existsSync(old)) fs.unlinkSync(old);
+  res.json({ avatar: found.avatar });
+});
+app.get('/api/avatars/:name', (req, res) => {
+  const name = path.basename(req.params.name); const file = path.join(avatarPath, name);
+  if (!/^[a-f0-9]{32}\.(jpg|png|webp)$/.test(name) || !fs.existsSync(file)) return res.status(404).end();
+  res.set('Cache-Control', 'private, max-age=86400').sendFile(file);
 });
 app.get('/api/course', auth, (req, res) => { const found = findUser(req.auth.id); if (!found) return res.status(401).json({ message: 'Tài khoản không tồn tại.' }); res.json(studentCourse(found)); });
 app.post('/api/lessons/:id/playback', auth, (req, res) => {

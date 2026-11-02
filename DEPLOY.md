@@ -274,6 +274,8 @@ Skill `comer-blog-agent` (ở `C:\Users\duyqu\.claude\skills\comer-blog-agent\`)
 | Hiện tượng | Cách xử lý |
 |---|---|
 | `npm run dev` báo `Cannot find module @rollup/rollup-win32-...` | `node_modules` đang chứa bản cho máy khác (Linux). Chạy `npm install` rồi chạy lại. |
+| Sửa code mà trang/API không đổi, hoặc báo "Máy chủ chưa có chức năng này" | Backend hoặc Vite đang chạy bản cũ. Tắt `npm run dev` (`Ctrl + C`) rồi chạy lại. Khi chạy trong WSL trên thư mục `/mnt/c/...`, cả hai đã được cấu hình tự kiểm tra file định kỳ. |
+| Chạy cả trên Windows lẫn trong WSL | Hai bên dùng chung `node_modules`. Chỉ chạy `npm install` ở một bên; nếu bên kia báo thiếu module `@rollup/...` hoặc `@esbuild/...` thì chạy `npm install` lại ở bên đó. |
 | `Port 3002/5173 is already in use` | Đã có một bản đang chạy. Tắt cửa sổ terminal cũ, hoặc khởi động lại máy. |
 | Skill báo `HTTP 401` | Khóa trên máy và server không giống nhau, hoặc server chưa có `CONTENT_AGENT_KEY` trong `.env` (sửa xong phải chạy lại `docker compose up -d`). |
 | Skill báo `HTTP 413` | Ảnh bìa quá lớn; nén ảnh dưới 5 MB. |

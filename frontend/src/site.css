@@ -170,6 +170,9 @@
 .site .s-prose p { margin: 0 0 18px; }
 .site .s-prose ul, .site .s-prose ol { margin: 0 0 18px; padding-left: 24px; }
 .site .s-prose strong { color: var(--ink); font-weight: 600; }
+.site .s-prose figure { margin: 28px 0; }
+.site .s-prose figure img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--rule); background: var(--paper-2); }
+.site .s-prose figcaption { margin-top: 10px; color: var(--muted); font-size: 14px; line-height: 1.5; text-align: center; }
 .site .s-prose blockquote { margin: 0 0 18px; padding: 14px 18px; background: var(--paper-2); border-left: 3px solid var(--brass); border-radius: 0 10px 10px 0; color: var(--ink); }
 .site .s-post-cover { display: block; width: calc(100% + 52px); margin: -26px -26px 20px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 13px 13px 0 0; border-bottom: 1px solid var(--rule); background: var(--paper-2); }
 .site .s-article-cover { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 14px; border: 1px solid var(--rule); margin: 0 0 28px; background: var(--paper-2); }
