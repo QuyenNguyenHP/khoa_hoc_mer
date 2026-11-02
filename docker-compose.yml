@@ -11,8 +11,9 @@ services:
       - ./backend/site-config.json:/app/backend/site-config.json
       - ./backend/private:/app/backend/private
       - ./backend/blog-images:/app/backend/blog-images
+    # Secrets come from .env next to this file (git-ignored), see DEPLOY.md.
     environment:
-      # Key for the Claude blog skill; set it in .env next to this file (git-ignored).
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
       CONTENT_AGENT_KEY: ${CONTENT_AGENT_KEY:-}
     expose:
       - "3002"

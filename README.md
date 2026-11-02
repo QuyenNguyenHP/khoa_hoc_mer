@@ -7,7 +7,7 @@ npm install
 npm run dev
 ```
 
-Mở `http://localhost:5173`.
+Mở `http://localhost:5173`. Hướng dẫn đầy đủ để chạy thử trên máy, triển khai lên server (Docker hoặc Apache + Node) và cài skill đăng blog: xem [DEPLOY.md](DEPLOY.md).
 
 ## Trang giới thiệu, đăng ký và blog
 
@@ -20,11 +20,12 @@ Mở `http://localhost:5173`.
 - Quy trình mua: khách bấm **Đăng ký học** → điền họ tên, email, SĐT → nhận mã QR (ảnh tạo bởi img.vietqr.io) với nội dung chuyển khoản riêng dạng `MERxxxxxx`.
 - Quản trị → tab **Đơn đăng ký**: đối chiếu sao kê theo mã, bấm **Đã nhận tiền** để tạo tài khoản học viên. Mật khẩu ngẫu nhiên chỉ hiện một lần kèm nội dung soạn sẵn để gửi qua email/Zalo.
 - Đơn đăng ký lưu ở `backend/private/orders.json` (có thông tin cá nhân, đã đưa vào `.gitignore`).
-- Quản trị → tab **Blog**: viết, sửa, đăng/ẩn bài. Bài lưu ở `backend/blog.json`. Cách viết: dòng trống giữa các đoạn, `## ` tiêu đề mục, `### ` tiêu đề nhỏ, `- ` gạch đầu dòng.
+- Quản trị → tab **Blog**: viết, sửa, đăng/ẩn bài. Bài lưu ở `backend/blog.json`. Cách viết: dòng trống giữa các đoạn, `## ` tiêu đề mục, `### ` tiêu đề nhỏ, `- ` gạch đầu dòng, `1. ` danh sách đánh số, `> ` khung ghi chú, `**chữ đậm**`.
+- Bài do skill Claude gửi qua `POST /api/agent/blog` (khóa `CONTENT_AGENT_KEY`) luôn là bản nháp, có thể kèm ảnh bìa lưu ở `backend/blog-images/`.
 
 ## Video, học viên và mở khóa bài
 
-- Chép video MP4 vào `backend/videos/` và đặt đúng tên: `buoi-01.mp4` đến `buoi-10.mp4`. Thư mục này không được public qua web.
+- Video MP4 của mỗi buổi nằm ở `backend/lessons/lesson-01/video.mp4` đến `lesson-10/video.mp4` (tải lên từ trang quản trị hoặc chép trực tiếp). Thư mục này không được public qua web.
 - Mỗi lần bấm phát, backend kiểm tra đăng nhập và quyền mở bài, rồi tạo URL stream riêng có hiệu lực 20 phút. Video phát theo byte-range để trình duyệt có thể tua; URL trực tiếp không tồn tại lâu dài.
 - Học viên bấm `Đánh dấu đã hoàn thành` sau khi xem. Backend lưu tiến độ trong `backend/data.json` và tự mở bài chưa hoàn thành kế tiếp.
 - Khi chưa có `backend/data.json`, backend tự tạo tài khoản mẫu (xem `readData()` trong `backend/index.js`). Đổi ngay mật khẩu các tài khoản này trước khi đưa lên mạng.
@@ -48,7 +49,7 @@ Trước khi xuất bản, thay `JWT_SECRET`, thêm cơ sở dữ liệu cho tà
 
 ## Upload video từ admin
 
-Video được lưu riêng trong `backend/videos/`, không phải thư mục public. Chỉ quản trị viên có token mới có thể upload; hệ thống chỉ nhận MP4, tối đa 2 GB, rồi tự đặt tên theo buổi học.
+Video được lưu riêng trong `backend/lessons/lesson-XX/video.mp4`, không phải thư mục public. Chỉ quản trị viên có token mới có thể upload; hệ thống chỉ nhận MP4, tối đa 2 GB, rồi tự đặt tên theo buổi học.
 
 ```bash
 # Xem trạng thái 10 video
@@ -66,4 +67,4 @@ curl -X DELETE http://localhost:3002/api/admin/videos/1 \
 
 ## Tài liệu đính kèm và ghi chú
 
-Mỗi buổi có thư mục PDF riêng trong `backend/materials/`: `buoi-01/` đến `buoi-10/`. Ví dụ, đặt `slide.pdf` hoặc `bai-tap.pdf` vào `backend/materials/buoi-01/` để chúng tự xuất hiện ở Buổi 1. Học viên chỉ thấy và tải được PDF của bài đang mở; file được tải qua liên kết có xác thực, không phải public URL. Ghi chú của từng học viên được lưu trong trường `notes` của hồ sơ tương ứng tại `backend/data.json`.
+Mỗi buổi có thư mục PDF riêng: `backend/lessons/lesson-01/materials/` đến `lesson-10/materials/`. Ví dụ, đặt `slide.pdf` hoặc `bai-tap.pdf` vào `backend/lessons/lesson-01/materials/` để chúng tự xuất hiện ở Buổi 1. Học viên chỉ thấy và tải được PDF của bài đang mở; file được tải qua liên kết có xác thực, không phải public URL. Ghi chú của từng học viên được lưu trong trường `notes` của hồ sơ tương ứng tại `backend/data.json`.

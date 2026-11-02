@@ -167,7 +167,10 @@ app.post('/api/admin/videos/:id', auth, admin, (req, res, next) => {
     if (error) return next(error);
     if (!req.file) return res.status(400).json({ message: 'Hãy chọn một file MP4.' });
     const lesson = lessons.find(item => item.id === Number(req.params.id)); const target = path.join(lessonDirectory(lesson), lesson.videoFile);
-    fs.renameSync(req.file.path, target); const stat = fs.statSync(target);
+    // In Docker, uploads/ and lessons/ can be on different disks, where rename fails with EXDEV.
+    try { fs.renameSync(req.file.path, target); }
+    catch (error) { if (error.code !== 'EXDEV') throw error; fs.copyFileSync(req.file.path, target); fs.unlinkSync(req.file.path); }
+    const stat = fs.statSync(target);
     res.status(201).json({ id: lesson.id, title: lesson.title, filename: lesson.videoFile, uploaded: true, size: stat.size, updatedAt: stat.mtime });
   });
 });
