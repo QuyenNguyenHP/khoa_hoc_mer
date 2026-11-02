@@ -37,8 +37,10 @@ function siteConfig() {
 }
 const bankReady = bank => Boolean(bank.bankId && bank.accountNo);
 
-function qrUrl(bank, amount, note) {
-  const params = new URLSearchParams({ amount: String(amount), addInfo: note });
+// The QR fills in the account and the transfer note only; the customer types the amount
+// (shown in the dialog), so the QR stays valid whatever the price.
+function qrUrl(bank, note) {
+  const params = new URLSearchParams({ addInfo: note });
   if (bank.accountName) params.set('accountName', bank.accountName);
   return `https://img.vietqr.io/image/${encodeURIComponent(bank.bankId)}-${encodeURIComponent(bank.accountNo)}-compact2.png?${params}`;
 }
@@ -77,20 +79,50 @@ const validCover = cover => !cover || /^\/api\/blog-images\/[\w.-]+$/.test(cover
 
 const publicPost = ({ content, ...post }) => ({ ...post, excerpt: excerptOf({ content, ...post }) });
 
-// Very small in-memory limit so the public order form cannot be flooded.
-const recentOrders = new Map();
-function tooManyOrders(ip) {
-  const now = Date.now(); const windowMs = 10 * 60 * 1000;
-  const list = (recentOrders.get(ip) || []).filter(time => now - time < windowMs);
-  if (list.length >= 5) { recentOrders.set(ip, list); return true; }
-  list.push(now); recentOrders.set(ip, list); return false;
+// Very small in-memory limits so public forms cannot be flooded or used to guess codes.
+function rateLimiter(maxPerWindow, windowMs = 10 * 60 * 1000) {
+  const recent = new Map();
+  return ip => {
+    const now = Date.now(); const list = (recent.get(ip) || []).filter(time => now - time < windowMs);
+    if (list.length >= maxPerWindow) { recent.set(ip, list); return true; }
+    list.push(now); recent.set(ip, list); return false;
+  };
 }
+const tooManyOrders = rateLimiter(5);
+const tooManyCouponChecks = rateLimiter(20);
+
+// ---- Discount codes ----
+// { id, code, type: 'percent' | 'amount', value, active, maxUses (0 = unlimited), expiresAt ('YYYY-MM-DD' or ''), note }
+// Uses are counted from PAID orders, so unpaid registrations never use up a code.
+const normalizeCode = value => String(value || '').toUpperCase().replace(/\s+/g, '');
+const COUPON_CODE = /^[A-Z0-9]{3,20}$/;
+// A code is valid through the end of its expiry date, Vietnam time (UTC+7).
+const expired = coupon => coupon.expiresAt && Date.now() > new Date(`${coupon.expiresAt}T23:59:59+07:00`).getTime();
+function discountFor(coupon, price) {
+  const off = coupon.type === 'percent' ? Math.round(price * coupon.value / 100) : coupon.value;
+  return Math.min(price, Math.max(0, off));
+}
+function couponLabel(coupon) { return coupon.type === 'percent' ? `giảm ${coupon.value}%` : `giảm ${Number(coupon.value).toLocaleString('vi-VN')}đ`; }
 
 module.exports = function registerSiteRoutes(app, { auth, admin, readData, writeData, getLessons, courseIndex }) {
   const posts = () => readJson(blogPath, { posts: [] }).posts;
   const savePosts = list => writeJson(blogPath, { posts: list });
   const orders = () => readJson(ordersPath, { orders: [] }).orders;
   const saveOrders = list => writeJson(ordersPath, { orders: list });
+  const coupons = () => readJson(storage.coupons, { coupons: [] }).coupons;
+  const saveCoupons = list => writeJson(storage.coupons, { coupons: list });
+  const usesOf = code => orders().filter(order => order.couponCode === code && order.status === 'paid').length;
+  // Returns { coupon, discount, amount } for a usable code, or { error } with a message for the customer.
+  function priceWithCoupon(rawCode, price) {
+    const code = normalizeCode(rawCode);
+    if (!code) return { coupon: null, discount: 0, amount: price };
+    const coupon = coupons().find(item => item.code === code);
+    if (!coupon || !coupon.active) return { error: 'Mã giảm giá không đúng hoặc đã ngừng áp dụng.' };
+    if (expired(coupon)) return { error: 'Mã giảm giá đã hết hạn.' };
+    if (coupon.maxUses && usesOf(code) >= coupon.maxUses) return { error: 'Mã giảm giá đã hết lượt sử dụng.' };
+    const discount = discountFor(coupon, price);
+    return { coupon, discount, amount: price - discount };
+  }
 
   // ---- Public ----
   app.get('/api/public/site', (_req, res) => {
@@ -108,6 +140,14 @@ module.exports = function registerSiteRoutes(app, { auth, admin, readData, write
     });
   });
 
+  app.post('/api/coupons/check', (req, res) => {
+    if (tooManyCouponChecks(req.ip)) return res.status(429).json({ message: 'Bạn đã thử nhiều mã liên tiếp. Vui lòng thử lại sau ít phút.' });
+    const price = siteConfig().price; const result = priceWithCoupon(req.body.code, price);
+    if (result.error) return res.status(400).json({ message: result.error });
+    if (!result.coupon) return res.status(400).json({ message: 'Hãy nhập mã giảm giá.' });
+    res.json({ code: result.coupon.code, label: couponLabel(result.coupon), original: price, discount: result.discount, amount: result.amount });
+  });
+
   app.post('/api/orders', (req, res) => {
     const name = String(req.body.name || '').trim();
     const email = String(req.body.email || '').trim().toLowerCase();
@@ -117,20 +157,25 @@ module.exports = function registerSiteRoutes(app, { auth, admin, readData, write
     if (!/^\+?\d{9,12}$/.test(phone)) return res.status(400).json({ message: 'Số điện thoại chưa đúng (9–12 chữ số).' });
     if (tooManyOrders(req.ip)) return res.status(429).json({ message: 'Bạn đã gửi nhiều đăng ký liên tiếp. Vui lòng thử lại sau ít phút hoặc nhắn Zalo cho chúng tôi.' });
 
-    const config = siteConfig(); const list = orders();
+    const config = siteConfig(); const priced = priceWithCoupon(req.body.couponCode, config.price);
+    if (priced.error) return res.status(400).json({ message: priced.error });
+    const list = orders(); const now = new Date().toISOString();
     // Reuse an unpaid order for the same email so the customer keeps one transfer code.
     let order = list.find(item => item.email === email && item.status === 'pending');
-    if (order) { order.name = name; order.phone = phone; order.updatedAt = new Date().toISOString(); }
+    if (order) { order.name = name; order.phone = phone; order.updatedAt = now; }
     else {
       let code; do { code = orderCode(); } while (list.some(item => item.code === code));
-      order = { id: `order-${Date.now()}`, code, name, email, phone, amount: config.price, status: 'pending', createdAt: new Date().toISOString() };
+      order = { id: `order-${Date.now()}`, code, name, email, phone, status: 'pending', createdAt: now };
       list.unshift(order);
     }
+    // Price, discount and transfer note always follow the latest registration.
+    Object.assign(order, { originalAmount: config.price, discount: priced.discount, amount: priced.amount, couponCode: priced.coupon?.code || null });
+    order.transferNote = order.couponCode ? `${order.code} ${order.couponCode}` : order.code;
     saveOrders(list);
     res.status(201).json({
-      code: order.code, amount: order.amount, transferNote: order.code,
+      code: order.code, amount: order.amount, originalAmount: order.originalAmount, discount: order.discount, couponCode: order.couponCode, transferNote: order.transferNote,
       bank: bankReady(config.bank) ? config.bank : null,
-      qrUrl: bankReady(config.bank) ? qrUrl(config.bank, order.amount, order.code) : null,
+      qrUrl: bankReady(config.bank) ? qrUrl(config.bank, order.transferNote) : null,
       zaloPhone: config.zaloPhone
     });
   });
@@ -166,6 +211,38 @@ module.exports = function registerSiteRoutes(app, { auth, admin, readData, write
     if (!order) return res.status(404).json({ message: 'Không tìm thấy đơn đăng ký.' });
     if (order.status === 'paid') return res.status(400).json({ message: 'Không thể hủy đơn đã thanh toán.' });
     order.status = 'cancelled'; order.updatedAt = new Date().toISOString(); saveOrders(list); res.json(order);
+  });
+
+  // ---- Admin: discount codes ----
+  function validCoupon(body) {
+    const code = normalizeCode(body.code); const type = body.type === 'amount' ? 'amount' : 'percent'; const value = Math.round(Number(body.value));
+    if (!COUPON_CODE.test(code)) return { error: 'Mã gồm 3–20 chữ cái không dấu hoặc số, viết liền (ví dụ GIAM20).' };
+    if (type === 'percent' && !(value >= 1 && value <= 100)) return { error: 'Phần trăm giảm phải từ 1 đến 100.' };
+    if (type === 'amount' && !(value >= 1000)) return { error: 'Số tiền giảm phải từ 1.000đ trở lên.' };
+    const maxUses = Math.max(0, Math.round(Number(body.maxUses) || 0));
+    const expiresAt = String(body.expiresAt || '').trim();
+    if (expiresAt && !/^\d{4}-\d{2}-\d{2}$/.test(expiresAt)) return { error: 'Ngày hết hạn không hợp lệ.' };
+    return { code, type, value, maxUses, expiresAt, active: body.active !== false, note: String(body.note || '').trim().slice(0, 200) };
+  }
+  const couponView = coupon => ({ ...coupon, uses: usesOf(coupon.code), expired: Boolean(expired(coupon)) });
+  app.get('/api/admin/coupons', auth, admin, (_req, res) => res.json(coupons().map(couponView)));
+  app.post('/api/admin/coupons', auth, admin, (req, res) => {
+    const fields = validCoupon(req.body); if (fields.error) return res.status(400).json({ message: fields.error });
+    const list = coupons(); if (list.some(item => item.code === fields.code)) return res.status(400).json({ message: `Mã ${fields.code} đã tồn tại.` });
+    const coupon = { id: `coupon-${Date.now()}`, ...fields, createdAt: new Date().toISOString() };
+    list.unshift(coupon); saveCoupons(list); res.status(201).json(couponView(coupon));
+  });
+  app.put('/api/admin/coupons/:id', auth, admin, (req, res) => {
+    const list = coupons(); const coupon = list.find(item => item.id === req.params.id);
+    if (!coupon) return res.status(404).json({ message: 'Không tìm thấy mã giảm giá.' });
+    const fields = validCoupon({ ...coupon, ...req.body }); if (fields.error) return res.status(400).json({ message: fields.error });
+    if (fields.code !== coupon.code && list.some(item => item.code === fields.code)) return res.status(400).json({ message: `Mã ${fields.code} đã tồn tại.` });
+    Object.assign(coupon, fields, { updatedAt: new Date().toISOString() }); saveCoupons(list); res.json(couponView(coupon));
+  });
+  app.delete('/api/admin/coupons/:id', auth, admin, (req, res) => {
+    const list = coupons(); const index = list.findIndex(item => item.id === req.params.id);
+    if (index < 0) return res.status(404).json({ message: 'Không tìm thấy mã giảm giá.' });
+    list.splice(index, 1); saveCoupons(list); res.status(204).end();
   });
 
   // ---- Admin: blog ----

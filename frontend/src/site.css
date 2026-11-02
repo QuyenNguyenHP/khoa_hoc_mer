@@ -205,6 +205,14 @@
 .site .s-form label { display: grid; gap: 6px; font-weight: 600; font-size: 15px; color: var(--ink); }
 .site .s-form input, .site .s-form textarea, .site .s-form select { font-size: 16px; padding: 12px 14px; border: 1px solid var(--control); border-radius: 10px; background: #fffdf8; color: var(--ink); }
 .site .s-form .s-btn { margin-top: 6px; }
+.site .s-coupon { display: grid; gap: 8px; }
+.site .s-coupon > label { font-weight: 600; font-size: 15px; color: var(--ink); }
+.site .s-coupon > label small { color: var(--muted); font-weight: 400; }
+.site .s-coupon > div { display: flex; gap: 8px; }
+.site .s-coupon input { flex: 1; min-width: 0; text-transform: uppercase; letter-spacing: .04em; }
+.site .s-form .s-coupon .s-btn { margin-top: 0; white-space: nowrap; }
+.site .s-coupon-ok { margin: 0; padding: 10px 14px; border-radius: 10px; background: rgba(29, 107, 69, .1); color: var(--good); font-size: 15px; }
+.site .s-pay-discount { display: block; margin-top: 4px; color: var(--good); font-size: 13px; font-weight: 500; }
 .site .s-error { background: #fbe4dc; color: var(--bad); border-radius: 10px; padding: 10px 14px; margin: 0; font-size: 15px; }
 .site .s-pay { display: grid; grid-template-columns: 200px 1fr; gap: 22px; align-items: start; }
 .site .s-pay img { width: 200px; height: 200px; object-fit: contain; border: 1px solid var(--rule); border-radius: 12px; background: #fff; }

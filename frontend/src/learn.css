@@ -185,3 +185,11 @@ main.loading { background: var(--paper); color: var(--ink); font-family: var(--s
 .admin-page .adm-cover-actions .adm-small:disabled { opacity: .6; cursor: wait; }
 .admin-page .adm-link { padding: 0; border: 0; background: none; color: var(--bad); font-size: 15px; font-weight: 600; cursor: pointer; }
 .admin-page .adm-cover-hint { color: var(--muted); font-size: 13px; }
+
+/* ---------- Admin: discount codes ---------- */
+.admin-page .adm-coupon-form { display: grid; gap: 14px; margin-bottom: 20px; }
+.admin-page .adm-coupon-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 16px; }
+.admin-page .adm-coupon-grid label { display: grid; gap: 6px; color: var(--ink); font-size: 14px; font-weight: 600; }
+.admin-page .adm-coupon-grid small { color: var(--muted); font-weight: 400; }
+.admin-page .adm-coupon-grid :is(input, select) { padding: 10px 12px; border: 1px solid var(--rule); border-radius: 10px; background: #fff; color: var(--ink); font-size: 15px; }
+@media (max-width: 850px) { .admin-page .adm-coupon-grid { grid-template-columns: 1fr; } }

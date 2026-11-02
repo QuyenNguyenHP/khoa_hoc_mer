@@ -4,6 +4,7 @@
 //   backend/storage/                  (one Docker volume; override with STORAGE_DIR)
 //     data.json                       accounts, progress, notes, questions
 //     orders.json                     registration orders (personal data)
+//     coupons.json                    discount codes
 //     blog.json                       blog posts
 //     site-config.json                price, bank, Zalo, instructor
 //     avatars/  blog-images/          uploaded pictures
@@ -23,6 +24,7 @@ const paths = {
   root,
   data: path.join(root, 'data.json'),
   orders: path.join(root, 'orders.json'),
+  coupons: path.join(root, 'coupons.json'),
   blog: path.join(root, 'blog.json'),
   siteConfig: path.join(root, 'site-config.json'),
   avatars: path.join(root, 'avatars'),

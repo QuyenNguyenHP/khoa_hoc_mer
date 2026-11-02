@@ -12,7 +12,7 @@ export function AdminOrders() {
   useEffect(() => { load(); }, []);
 
   const confirm = async order => {
-    if (!window.confirm(`Xác nhận đã nhận ${money(order.amount)} với nội dung ${order.code} từ ${order.name}?`)) return;
+    if (!window.confirm(`Xác nhận đã nhận ${money(order.amount)} với nội dung ${order.transferNote || order.code} từ ${order.name}?`)) return;
     try { const result = await api(`/api/admin/orders/${order.id}/confirm`, { method: 'POST' }); setCreated(result); setCopied(false); load(); } catch (error) { setMessage(error.message); }
   };
   const cancel = async order => {
@@ -41,10 +41,10 @@ export function AdminOrders() {
     <div className="adm-table-wrap"><table className="adm-table">
       <thead><tr><th>Mã chuyển khoản</th><th>Học viên</th><th>Liên hệ</th><th>Số tiền</th><th>Ngày đăng ký</th><th>Trạng thái</th><th/></tr></thead>
       <tbody>{shown.length ? shown.map(order => <tr key={order.id}>
-        <td><code>{order.code}</code></td>
+        <td><code>{order.transferNote || order.code}</code></td>
         <td>{order.name}</td>
         <td>{order.email}<br/><small>{order.phone}</small></td>
-        <td>{money(order.amount)}</td>
+        <td>{money(order.amount)}{order.couponCode && <><br/><small>Mã {order.couponCode}: -{money(order.discount)} (gốc {money(order.originalAmount)})</small></>}</td>
         <td>{new Date(order.createdAt).toLocaleString('vi-VN')}</td>
         <td><span className={`adm-status ${order.status}`}>{STATUS[order.status]}</span></td>
         <td className="adm-actions">{order.status === 'pending' && <><button onClick={() => confirm(order)}>Đã nhận tiền</button><button className="adm-muted" onClick={() => cancel(order)}>Hủy</button></>}</td>
