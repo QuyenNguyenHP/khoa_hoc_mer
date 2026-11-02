@@ -6,6 +6,11 @@ const bcrypt = require('bcryptjs');
 
 const configPath = path.join(__dirname, 'site-config.json');
 const blogPath = path.join(__dirname, 'blog.json');
+// Blog cover images uploaded by the content agent (git-ignored, mounted as a Docker volume).
+const blogImagesPath = path.join(__dirname, 'blog-images');
+fs.mkdirSync(blogImagesPath, { recursive: true });
+const IMAGE_TYPES = { 'image/png': '.png', 'image/jpeg': '.jpg', 'image/webp': '.webp', 'image/gif': '.gif' };
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 // Orders hold customers' names, emails and phone numbers: backend/private/ is git-ignored.
 const privatePath = path.join(__dirname, 'private');
 const ordersPath = path.join(privatePath, 'orders.json');
@@ -176,5 +181,44 @@ module.exports = function registerSiteRoutes(app, { auth, admin, readData, write
     const list = posts(); const index = list.findIndex(item => item.id === req.params.id);
     if (index < 0) return res.status(404).json({ message: 'Không tìm thấy bài viết.' });
     list.splice(index, 1); savePosts(list); res.status(204).end();
+  });
+
+  // ---- Blog cover images ----
+  app.get('/api/blog-images/:name', (req, res) => {
+    const name = path.basename(req.params.name);
+    const file = path.join(blogImagesPath, name);
+    if (name.startsWith('.') || !fs.existsSync(file)) return res.status(404).end();
+    res.set('Cache-Control', 'public, max-age=31536000, immutable').sendFile(file);
+  });
+
+  // ---- Content agent (Claude skill) ----
+  // Authenticated with CONTENT_AGENT_KEY. It can only upload a cover and create draft posts;
+  // an admin reviews and publishes them in the admin page.
+  function agentAuth(req, res, next) {
+    const key = process.env.CONTENT_AGENT_KEY || '';
+    const given = String(req.headers.authorization || '').replace(/^Bearer\s+/i, '');
+    const ok = key.length >= 24 && given.length === key.length && crypto.timingSafeEqual(Buffer.from(given), Buffer.from(key));
+    if (!ok) return res.status(401).json({ message: 'API key không hợp lệ hoặc máy chủ chưa cấu hình CONTENT_AGENT_KEY.' });
+    next();
+  }
+  app.post('/api/agent/upload', agentAuth, (req, res) => {
+    const match = /^data:(image\/(?:png|jpeg|webp|gif));base64,([A-Za-z0-9+/=\s]+)$/.exec(String(req.body.dataUrl || ''));
+    if (!match) return res.status(400).json({ message: 'dataUrl phải là ảnh PNG, JPEG, WEBP hoặc GIF dạng base64.' });
+    const bytes = Buffer.from(match[2], 'base64');
+    if (!bytes.length || bytes.length > MAX_IMAGE_BYTES) return res.status(400).json({ message: 'Ảnh phải nhỏ hơn 5 MB.' });
+    const base = slugify(path.parse(String(req.body.filename || 'anh-bia')).name).slice(0, 60);
+    const name = `${Date.now()}-${base}${IMAGE_TYPES[match[1]]}`;
+    fs.writeFileSync(path.join(blogImagesPath, name), bytes);
+    res.status(201).json({ url: `/api/blog-images/${name}` });
+  });
+  app.post('/api/agent/blog', agentAuth, (req, res) => {
+    const fields = validPost(req.body); if (fields.error) return res.status(400).json({ message: fields.error });
+    const cover = String(req.body.cover || '').trim();
+    if (cover && !/^\/api\/blog-images\/[\w.-]+$/.test(cover) && !/^https:\/\/\S+$/.test(cover)) return res.status(400).json({ message: 'cover phải là URL trả về từ /api/agent/upload hoặc một URL https://.' });
+    const list = posts(); const slug = slugify(req.body.slug || fields.title);
+    if (list.some(item => item.slug === slug)) return res.status(400).json({ message: `Slug "${slug}" đã tồn tại, hãy chọn slug khác.` });
+    const now = new Date().toISOString();
+    const post = { id: `post-${Date.now()}`, slug, ...fields, published: false, cover: cover || undefined, author: 'Claude (agent)', createdAt: now, updatedAt: now };
+    list.push(post); savePosts(list); res.status(201).json(post);
   });
 };

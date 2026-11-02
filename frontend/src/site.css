@@ -168,7 +168,11 @@
 .site .s-prose h2 { font-size: 28px; color: var(--ink); margin: 40px 0 12px; }
 .site .s-prose h3 { font-size: 21px; color: var(--ink); margin: 28px 0 10px; }
 .site .s-prose p { margin: 0 0 18px; }
-.site .s-prose ul { margin: 0 0 18px; padding-left: 24px; }
+.site .s-prose ul, .site .s-prose ol { margin: 0 0 18px; padding-left: 24px; }
+.site .s-prose strong { color: var(--ink); font-weight: 600; }
+.site .s-prose blockquote { margin: 0 0 18px; padding: 14px 18px; background: var(--paper-2); border-left: 3px solid var(--brass); border-radius: 0 10px 10px 0; color: var(--ink); }
+.site .s-post-cover { display: block; width: calc(100% + 52px); margin: -26px -26px 20px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 13px 13px 0 0; border-bottom: 1px solid var(--rule); background: var(--paper-2); }
+.site .s-article-cover { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 14px; border: 1px solid var(--rule); margin: 0 0 28px; background: var(--paper-2); }
 .site .s-prose li { margin: 6px 0; }
 .site .s-prose li::marker { color: var(--brass); }
 .site .s-article-cta { margin-top: 44px; background: var(--night); color: var(--night-ink); border-radius: 16px; padding: 28px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }

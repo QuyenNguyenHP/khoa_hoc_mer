@@ -37,6 +37,7 @@ export function AdminBlog() {
       <div className="detail-heading"><h2>{editing.id ? 'Sửa bài viết' : 'Bài viết mới'}</h2>{editing.id && editing.published && <a href={`#blog/${editing.slug}`} target="_blank" rel="noreferrer">Xem bài ↗</a>}</div>
       <div className="adm-fields">
         {message && <p className="notice">{message}</p>}
+        {editing.cover && <img src={editing.cover} alt="Ảnh bìa" style={{ width: '100%', maxWidth: 420, aspectRatio: '16 / 9', objectFit: 'cover', borderRadius: 10, border: '1px solid var(--rule)' }}/>}
         <label>Tiêu đề<input value={editing.title} onChange={field('title')} required maxLength={200}/></label>
         <label>Chủ đề<input value={editing.category} onChange={field('category')} list="blog-categories" maxLength={60}/></label>
         <datalist id="blog-categories"><option value="Kiến thức nghề"/><option value="Về khóa học"/><option value="Kinh nghiệm đi làm"/></datalist>

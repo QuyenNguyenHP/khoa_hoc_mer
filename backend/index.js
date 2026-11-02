@@ -28,6 +28,8 @@ const upload = multer({
 // visitor (used by the order-form rate limit).
 app.set('trust proxy', 'loopback, linklocal, uniquelocal');
 app.use(cors());
+// The content agent sends cover images as base64, so its routes accept bigger bodies.
+app.use('/api/agent', express.json({ limit: '8mb' }));
 app.use(express.json());
 
 function loadLessons() {

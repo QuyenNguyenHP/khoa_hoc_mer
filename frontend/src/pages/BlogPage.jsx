@@ -6,6 +6,7 @@ export const formatDate = value => new Date(value).toLocaleDateString('vi-VN', {
 
 export function PostCard({ post }) {
   return <a className="s-post-card" href={`#blog/${post.slug}`} onClick={() => window.scrollTo(0, 0)}>
+    {post.cover && <img className="s-post-cover" src={post.cover} alt="" loading="lazy"/>}
     <span className="s-post-meta">{post.category} · {formatDate(post.createdAt)}</span>
     <h3>{post.title}</h3>
     <p>{post.excerpt}</p>
@@ -51,6 +52,7 @@ function BlogPost({ slug, openRegister }) {
       <span className="s-post-meta">{post.category} · {formatDate(post.createdAt)}</span>
       <h1>{post.title}</h1>
       {post.excerpt && <p className="s-lead">{post.excerpt}</p>}
+      {post.cover && <img className="s-article-cover" src={post.cover} alt=""/>}
       <RichText text={post.content}/>
       <div className="s-article-cta">
         <p>Muốn học bài bản cả quy trình? Khóa học 10 buổi Merchandising ngành may.</p>

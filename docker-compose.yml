@@ -10,6 +10,10 @@ services:
       - ./backend/blog.json:/app/backend/blog.json
       - ./backend/site-config.json:/app/backend/site-config.json
       - ./backend/private:/app/backend/private
+      - ./backend/blog-images:/app/backend/blog-images
+    environment:
+      # Key for the Claude blog skill; set it in .env next to this file (git-ignored).
+      CONTENT_AGENT_KEY: ${CONTENT_AGENT_KEY:-}
     expose:
       - "3002"
 

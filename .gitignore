@@ -1,3 +1,5 @@
 node_modules/
 backend/private/
 backend/uploads/
+backend/blog-images/
+.env
