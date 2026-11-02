@@ -7,7 +7,6 @@ export function RegisterDialog({ info, onClose }) {
   const [order, setOrder] = useState(null);
   const [error, setError] = useState('');
   const [sending, setSending] = useState(false);
-  const [copied, setCopied] = useState('');
   const [couponInput, setCouponInput] = useState(''); const [coupon, setCoupon] = useState(null); const [couponError, setCouponError] = useState(''); const [checking, setChecking] = useState(false);
   const price = info?.price || 1990000;
   const firstInput = useRef(null);
@@ -35,9 +34,6 @@ export function RegisterDialog({ info, onClose }) {
     try { setCoupon(await api('/api/coupons/check', { method: 'POST', body: JSON.stringify({ code }) })); }
     catch (problem) { setCouponError(problem.message); }
     setChecking(false);
-  };
-  const copy = async (label, text) => {
-    try { await navigator.clipboard.writeText(text); setCopied(label); setTimeout(() => setCopied(''), 1500); } catch { /* clipboard blocked: user can still read the text */ }
   };
   const zalo = (order?.zaloPhone || info?.zaloPhone) ? `https://zalo.me/${order?.zaloPhone || info.zaloPhone}` : '';
 
@@ -69,10 +65,10 @@ export function RegisterDialog({ info, onClose }) {
           <img src={order.qrUrl} alt={`Mã QR chuyển khoản, nội dung ${order.transferNote}`}/>
           <dl>
             <div><dt>Ngân hàng</dt><dd>{order.bank.bankName || order.bank.bankId}</dd></div>
-            <div><dt>Số tài khoản</dt><dd><span className="s-code">{order.bank.accountNo}<button onClick={() => copy('acc', order.bank.accountNo)}>{copied === 'acc' ? 'Đã chép' : 'Chép'}</button></span></dd></div>
+            <div><dt>Số tài khoản</dt><dd><span className="s-code">{order.bank.accountNo}</span></dd></div>
             {order.bank.accountName && <div><dt>Chủ tài khoản</dt><dd>{order.bank.accountName}</dd></div>}
-            <div><dt>Số tiền cần chuyển</dt><dd><span className="s-code">{formatPrice(order.amount)}<button onClick={() => copy('amount', String(order.amount))}>{copied === 'amount' ? 'Đã chép' : 'Chép'}</button></span>{order.couponCode && <small className="s-pay-discount">Đã áp dụng mã {order.couponCode}: giảm {formatPrice(order.discount)} (giá gốc <s>{formatPrice(order.originalAmount)}</s>)</small>}</dd></div>
-            <div><dt>Nội dung chuyển khoản</dt><dd><span className="s-code">{order.transferNote}<button onClick={() => copy('note', order.transferNote)}>{copied === 'note' ? 'Đã chép' : 'Chép'}</button></span></dd></div>
+            <div><dt>Số tiền cần chuyển</dt><dd><span className="s-code">{formatPrice(order.amount)}</span>{order.couponCode && <small className="s-pay-discount">Đã áp dụng mã {order.couponCode}: giảm {formatPrice(order.discount)} (giá gốc <s>{formatPrice(order.originalAmount)}</s>)</small>}</dd></div>
+            <div><dt>Nội dung chuyển khoản</dt><dd><span className="s-code">{order.transferNote}</span></dd></div>
           </dl>
         </div> : <p className="s-pay-note">Mã đăng ký của bạn là <span className="s-code">{order.code}</span>. Thông tin chuyển khoản đang được cập nhật, xin vui lòng chờ chúng tôi một chút.</p>}
         <p className="s-pay-note">Sau khi xác nhận thanh toán, chúng tôi sẽ gửi thông tin tài khoản tới số Zalo/điện thoại của bạn. Giữ đúng nội dung <b>{order.transferNote}</b> để đơn được xác nhận nhanh.</p>
