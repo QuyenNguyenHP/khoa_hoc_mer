@@ -1,4 +1,4 @@
-# CLAUDE.md: bối cảnh dự án cho AI
+# PROJECT_CONTEXT.md: bối cảnh dự án cho AI
 
 Trang bán và học khóa **Merchandising ngành may** (10 buổi) tại `https://comernganhmay.online`.
 Chủ dự án nói tiếng Việt, không chuyên kỹ thuật: trả lời bằng tiếng Việt, câu ngắn, ít thuật ngữ.
