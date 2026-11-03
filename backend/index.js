@@ -184,6 +184,14 @@ app.put('/api/admin/students/:id', auth, admin, (req, res) => {
   const data = readData(); const found = data.users.find(item => item.id === req.params.id && item.role === 'student'); if (!found) return res.status(404).json({ message: 'Không tìm thấy học viên.' });
   const { name, email, password } = req.body; if (name) found.name = name; if (email) found.email = email; if (password) found.passwordHash = bcrypt.hashSync(password, 10); writeData(data); res.json(studentSummary(found));
 });
+// Admin sets a new password for any account (e.g. a student who forgot theirs).
+app.put('/api/admin/accounts/:id/password', auth, admin, (req, res) => {
+  const data = readData(); const found = data.users.find(item => item.id === req.params.id);
+  if (!found) return res.status(404).json({ message: 'Không tìm thấy tài khoản.' });
+  const next = String(req.body.password || '');
+  if (next.length < 8 || next.length > 100) return res.status(400).json({ message: 'Mật khẩu mới cần từ 8 đến 100 ký tự.' });
+  found.passwordHash = bcrypt.hashSync(next, 10); writeData(data); res.json({ message: `Đã đặt mật khẩu mới cho ${found.name}.` });
+});
 app.put('/api/admin/accounts/:id/role', auth, admin, (req, res) => {
   const { role } = req.body; const data = readData(); const found = data.users.find(item => item.id === req.params.id);
   if (!found) return res.status(404).json({ message: 'Không tìm thấy tài khoản.' });
