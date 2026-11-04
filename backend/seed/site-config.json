@@ -9,7 +9,7 @@
   "zaloPhone": "",
   "instructor": {
     "name": "Cô Mer",
-    "role": "Giảng viên nghiệp vụ Merchandiser",
-    "bio": "Giảng viên nghiệp vụ Merchandiser với kinh nghiệm thực chiến tại công ty may mặc xuất khẩu. (Cập nhật phần giới thiệu này trong backend/storage/site-config.json.)"
+    "role": "Nhóm trưởng Merchandiser phát triển sản phẩm · Khách hàng adidas",
+    "bio": "Kỹ sư Dệt May Bách Khoa Hà Nội với gần 7 năm “chinh chiến” tại các tập đoàn đa quốc gia.\n\nCô Mer đã trực tiếp phát triển sản phẩm và làm hàng cho những thương hiệu lớn như adidas, Hugo Boss, Reformation, Castle…\n\nỞ đây không có lý thuyết suông. Mỗi bài giảng là những tình huống thật, từ phòng mẫu đến bàn làm việc với Buyer, giúp bạn hiểu đúng và làm được nghề Merchandiser."
   }
 }

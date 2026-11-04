@@ -129,6 +129,7 @@
 .site .s-instructor h3 { font-size: 26px; color: var(--ink); }
 .site .s-instructor .s-role { color: var(--accent-ink); font-weight: 600; margin: 4px 0 12px; }
 .site .s-instructor p { margin: 0; color: var(--muted); }
+.site .s-instructor p + p { margin-top: 12px; }
 
 /* FAQ */
 .site .s-faq { display: grid; gap: 0; max-width: 860px; border-top: 1px solid var(--rule); }

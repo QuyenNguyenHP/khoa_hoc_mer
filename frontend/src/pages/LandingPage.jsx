@@ -89,7 +89,7 @@ export function LandingPage({ user }) {
           <div className="s-section-head"><p className="s-tag">Giảng viên</p><h2>Người đồng hành cùng bạn</h2></div>
           <div className="s-instructor">
             <div className="s-avatar" aria-hidden="true"/>
-            <div><h3>{info?.instructor?.name || 'Cô Mer'}</h3>{info?.instructor?.role && <p className="s-role">{info.instructor.role}</p>}<p>{info?.instructor?.bio}</p></div>
+            <div><h3>{info?.instructor?.name || 'Cô Mer'}</h3>{info?.instructor?.role && <p className="s-role">{info.instructor.role}</p>}{String(info?.instructor?.bio || '').split(/\n\s*\n/).filter(Boolean).map((text, index) => <p key={index}>{text}</p>)}</div>
           </div>
         </div>
       </section>
